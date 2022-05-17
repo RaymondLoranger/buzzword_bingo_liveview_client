@@ -13,10 +13,15 @@ config :buzzword_bingo_liveview_client, Buzzword.Bingo.Liveview.ClientWeb.Endpoi
   check_origin: false,
   code_reloader: true,
   debug_errors: true,
-  secret_key_base: "zKpirWksUbZNMTYVqG+oMWNPW7sCHNaPbdV56OCTSjENP/datzSFCQnB5kmuOGdz",
+  secret_key_base:
+    "zKpirWksUbZNMTYVqG+oMWNPW7sCHNaPbdV56OCTSjENP/datzSFCQnB5kmuOGdz",
   watchers: [
-    # Start the esbuild watcher by calling Esbuild.install_and_run(:default, args)
-    esbuild: {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]}
+    # Start the esbuild watcher by calling:
+    # Esbuild.install_and_run(:default, args)
+    esbuild:
+      {Esbuild, :install_and_run, [:default, ~w(--sourcemap=inline --watch)]},
+    # Add Tailwind to list of watchers
+    tailwind: {Tailwind, :install_and_run, [:default, ~w(--watch)]}
   ]
 
 # ## SSL Support
