@@ -89,7 +89,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
 
-      # Import LiveView and .heex helpers (live_render, live_patch, <.form>, etc)
+      # Import LiveView & .heex helpers (live_render, live_patch, <.form>, etc)
       import Phoenix.LiveView.Helpers
 
       # Import basic rendering functionality (render, render_layout, etc)

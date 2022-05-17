@@ -14,7 +14,8 @@ defmodule Buzzword.Bingo.Liveview.Client.Application do
       {Phoenix.PubSub, name: Buzzword.Bingo.Liveview.Client.PubSub},
       # Start the Endpoint (http/https)
       Buzzword.Bingo.Liveview.ClientWeb.Endpoint
-      # Start a worker by calling: Buzzword.Bingo.Liveview.Client.Worker.start_link(arg)
+      # Start a worker by calling:
+      # Buzzword.Bingo.Liveview.Client.Worker.start_link(arg)
       # {Buzzword.Bingo.Liveview.Client.Worker, arg}
     ]
 
