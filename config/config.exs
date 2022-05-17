@@ -11,11 +11,16 @@ config :buzzword_bingo_liveview_client,
   namespace: Buzzword.Bingo.Liveview.Client
 
 # Configures the endpoint
-config :buzzword_bingo_liveview_client, Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
-  url: [host: "localhost"],
-  render_errors: [view: Buzzword.Bingo.Liveview.ClientWeb.ErrorView, accepts: ~w(html json), layout: false],
-  pubsub_server: Buzzword.Bingo.Liveview.Client.PubSub,
-  live_view: [signing_salt: "wAB7v6vM"]
+config :buzzword_bingo_liveview_client,
+       Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+       url: [host: "localhost"],
+       render_errors: [
+         view: Buzzword.Bingo.Liveview.ClientWeb.ErrorView,
+         accepts: ~w(html json),
+         layout: false
+       ],
+       pubsub_server: Buzzword.Bingo.Liveview.Client.PubSub,
+       live_view: [signing_salt: "wAB7v6vM"]
 
 # Configure esbuild (the version is required)
 config :esbuild,

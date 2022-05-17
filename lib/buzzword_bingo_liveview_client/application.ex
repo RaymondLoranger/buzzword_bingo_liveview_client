@@ -20,7 +20,11 @@ defmodule Buzzword.Bingo.Liveview.Client.Application do
 
     # See https://hexdocs.pm/elixir/Supervisor.html
     # for other strategies and supported options
-    opts = [strategy: :one_for_one, name: Buzzword.Bingo.Liveview.Client.Supervisor]
+    opts = [
+      strategy: :one_for_one,
+      name: Buzzword.Bingo.Liveview.Client.Supervisor
+    ]
+
     Supervisor.start_link(children, opts)
   end
 
