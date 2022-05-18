@@ -46,6 +46,8 @@ defmodule Buzzword.Bingo.Liveview.Client.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       # Added dependencies...
+      {:buzzword_bingo_engine, github: "RaymondLoranger/buzzword_bingo_engine"},
+      {:phoenix_ecto, "~> 4.4"},
       {:tailwind, "~> 0.1", runtime: Mix.env() == :dev},
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       # {:ex_doc, "~> 0.22", only: :dev, runtime: false},
