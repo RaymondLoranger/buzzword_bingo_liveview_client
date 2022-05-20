@@ -11,8 +11,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComp do
     ~H"""
     <div id="user-form">
       <.form let={f} for={@changeset} phx-change="validate" phx-submit="save">
-        <%= text_input(f, :name, placeholder: "Name") %>
-        <%= error_tag(f, :name) %>
+        <%= text_input(f, :name, placeholder: "Name") %> <%= error_tag(f, :name) %>
         <%= text_input(f, :color, placeholder: "Color") %>
         <%= error_tag(f, :color) %>
         <%= submit("Save", phx_disable_with: "Saving...") %>
