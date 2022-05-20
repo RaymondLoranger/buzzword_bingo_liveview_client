@@ -1,4 +1,4 @@
-defmodule Buzzword.Bingo.Liveview.Client.MixProject do
+defmodule Buzzword.Bingo.LiveView.Client.MixProject do
   use Mix.Project
 
   def project do
@@ -19,7 +19,7 @@ defmodule Buzzword.Bingo.Liveview.Client.MixProject do
   # Type `mix help compile.app` for more information.
   def application do
     [
-      mod: {Buzzword.Bingo.Liveview.Client.Application, []},
+      mod: {Buzzword.Bingo.LiveView.Client.Application, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

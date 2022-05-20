@@ -1,6 +1,6 @@
-defmodule Buzzword.Bingo.Liveview.Client do
+defmodule Buzzword.Bingo.LiveView.Client do
   @moduledoc """
-  Buzzword.Bingo.Liveview.Client keeps the contexts that define your domain
+  Buzzword.Bingo.LiveView.Client keeps the contexts that define your domain
   and business logic.
 
   Contexts are also responsible for managing your data, regardless

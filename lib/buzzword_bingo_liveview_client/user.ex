@@ -5,6 +5,21 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
 
   alias __MODULE__
 
+  @colors [
+    "#a4deff",
+    "#f9cedf",
+    "#d3c5f1",
+    "#acc9f5",
+    "#aeeace",
+    "#96d7b9",
+    "#fce8bd",
+    "#fcd8ac",
+    "blue",
+    "yellow",
+    "green",
+    "cyan",
+    "indigo"
+  ]
   @primary_key false
 
   embedded_schema do
@@ -14,11 +29,11 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
 
   @doc false
   def changeset(user, attrs) do
-    # IO.inspect(user, label: "&&& user &&&")
-    # IO.inspect(attrs, label: "&&& attrs &&&")
     user
     |> cast(attrs, [:name, :color])
     |> validate_required([:name, :color])
+    |> validate_length(:name, min: 2, max: 9, message: "must be 2 to 9 chars")
+    |> validate_inclusion(:color, @colors, message: "invalid color")
   end
 
   @doc """

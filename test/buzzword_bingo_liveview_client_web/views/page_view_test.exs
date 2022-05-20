@@ -1,3 +1,3 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.PageViewTest do
-  use Buzzword.Bingo.Liveview.ClientWeb.ConnCase, async: true
+defmodule Buzzword.Bingo.LiveView.ClientWeb.PageViewTest do
+  use Buzzword.Bingo.LiveView.ClientWeb.ConnCase, async: true
 end

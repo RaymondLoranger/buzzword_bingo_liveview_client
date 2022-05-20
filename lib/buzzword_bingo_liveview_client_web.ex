@@ -1,12 +1,12 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb do
+defmodule Buzzword.Bingo.LiveView.ClientWeb do
   @moduledoc """
   The entrypoint for defining your web interface, such
   as controllers, views, channels and so on.
 
   This can be used in your application as:
 
-      use Buzzword.Bingo.Liveview.ClientWeb, :controller
-      use Buzzword.Bingo.Liveview.ClientWeb, :view
+      use Buzzword.Bingo.LiveView.ClientWeb, :controller
+      use Buzzword.Bingo.LiveView.ClientWeb, :view
 
   The definitions below will be executed for every view,
   controller, etc, so keep them short and clean, focused
@@ -19,11 +19,11 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
 
   def controller do
     quote do
-      use Phoenix.Controller, namespace: Buzzword.Bingo.Liveview.ClientWeb
+      use Phoenix.Controller, namespace: Buzzword.Bingo.LiveView.ClientWeb
 
       import Plug.Conn
-      import Buzzword.Bingo.Liveview.ClientWeb.Gettext
-      alias Buzzword.Bingo.Liveview.ClientWeb.Router.Helpers, as: Routes
+      import Buzzword.Bingo.LiveView.ClientWeb.Gettext
+      alias Buzzword.Bingo.LiveView.ClientWeb.Router.Helpers, as: Routes
     end
   end
 
@@ -31,7 +31,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
     quote do
       use Phoenix.View,
         root: "lib/buzzword_bingo_liveview_client_web/templates",
-        namespace: Buzzword.Bingo.Liveview.ClientWeb
+        namespace: Buzzword.Bingo.LiveView.ClientWeb
 
       # Import convenience functions from controllers
       import Phoenix.Controller,
@@ -45,7 +45,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
-        layout: {Buzzword.Bingo.Liveview.ClientWeb.LayoutView, "live.html"}
+        layout: {Buzzword.Bingo.LiveView.ClientWeb.LayoutView, "live.html"}
 
       unquote(view_helpers())
     end
@@ -80,7 +80,19 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
   def channel do
     quote do
       use Phoenix.Channel
-      import Buzzword.Bingo.Liveview.ClientWeb.Gettext
+      import Buzzword.Bingo.LiveView.ClientWeb.Gettext
+    end
+  end
+
+  def aliases do
+    quote do
+      alias Buzzword.Bingo.LiveView.ClientWeb.{UserFormComp, GameSizeFormComp}
+      alias Buzzword.Bingo.LiveView.Client.{User, GameSize}
+      alias Buzzword.Bingo.{Engine, Player}
+      alias Ecto.Changeset
+      alias Phoenix.{HTML, LiveComponent, LiveView}
+      alias Phoenix.LiveComponent.CID
+      alias Phoenix.LiveView.{JS, Rendered, Socket, UploadEntry}
     end
   end
 
@@ -91,13 +103,14 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb do
 
       # Import LiveView & .heex helpers (live_render, live_patch, <.form>, etc)
       import Phoenix.LiveView.Helpers
+      import Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers
 
       # Import basic rendering functionality (render, render_layout, etc)
       import Phoenix.View
 
-      import Buzzword.Bingo.Liveview.ClientWeb.ErrorHelpers
-      import Buzzword.Bingo.Liveview.ClientWeb.Gettext
-      alias Buzzword.Bingo.Liveview.ClientWeb.Router.Helpers, as: Routes
+      import Buzzword.Bingo.LiveView.ClientWeb.ErrorHelpers
+      import Buzzword.Bingo.LiveView.ClientWeb.Gettext
+      alias Buzzword.Bingo.LiveView.ClientWeb.Router.Helpers, as: Routes
     end
   end
 

@@ -1,11 +1,11 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.Router do
-  use Buzzword.Bingo.Liveview.ClientWeb, :router
+defmodule Buzzword.Bingo.LiveView.ClientWeb.Router do
+  use Buzzword.Bingo.LiveView.ClientWeb, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
     plug :fetch_session
     plug :fetch_live_flash
-    plug :put_root_layout, {Buzzword.Bingo.Liveview.ClientWeb.LayoutView, :root}
+    plug :put_root_layout, {Buzzword.Bingo.LiveView.ClientWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
   end
@@ -14,19 +14,18 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/", Buzzword.Bingo.Liveview.ClientWeb do
+  scope "/", Buzzword.Bingo.LiveView.ClientWeb do
     pipe_through :browser
 
     get "/", PageController, :index
 
-    live "/players/new", PlayerLive.New
-
-    live "/games/new", GameLive.New
-    live "/games/:id", GameLive.Show, :show
+    live "/games", GameLive, :login
+    live "/games/new", GameLive, :new
+    live "/games/:id", GameLive, :show
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", Buzzword.Bingo.Liveview.ClientWeb do
+  # scope "/api", Buzzword.Bingo.LiveView.ClientWeb do
   #   pipe_through :api
   # end
 
@@ -44,7 +43,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.Router do
       pipe_through :browser
 
       live_dashboard "/dashboard",
-        metrics: Buzzword.Bingo.Liveview.ClientWeb.Telemetry
+        metrics: Buzzword.Bingo.LiveView.ClientWeb.Telemetry
     end
   end
 end

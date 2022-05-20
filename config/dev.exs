@@ -7,7 +7,7 @@ import Config
 # watchers to your application. For example, we use it
 # with esbuild to bundle .js and .css sources.
 config :buzzword_bingo_liveview_client,
-       Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+       Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
        # Binding to loopback ipv4 address prevents access from other machines.
        # Change to `ip: {0, 0, 0, 0}` to allow access from other machines.
        http: [ip: {127, 0, 0, 1}, port: 4000],
@@ -52,7 +52,7 @@ config :buzzword_bingo_liveview_client,
 
 # Watch static and templates for browser reloading.
 config :buzzword_bingo_liveview_client,
-       Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+       Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
        live_reload: [
          patterns: [
            ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",

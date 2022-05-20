@@ -1,4 +1,4 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.Telemetry do
+defmodule Buzzword.Bingo.LiveView.ClientWeb.Telemetry do
   use Supervisor
   import Telemetry.Metrics
 
@@ -43,7 +43,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.Telemetry do
       # A module, function and arguments to be invoked periodically.
       # This function must call :telemetry.execute/3 and a metric
       # must be added above.
-      # {Buzzword.Bingo.Liveview.ClientWeb, :count_users, []}
+      # {Buzzword.Bingo.LiveView.ClientWeb, :count_users, []}
     ]
   end
 end

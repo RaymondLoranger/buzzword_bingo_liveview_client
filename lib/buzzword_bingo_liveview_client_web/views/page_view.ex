@@ -1,3 +1,3 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.PageView do
-  use Buzzword.Bingo.Liveview.ClientWeb, :view
+defmodule Buzzword.Bingo.LiveView.ClientWeb.PageView do
+  use Buzzword.Bingo.LiveView.ClientWeb, :view
 end

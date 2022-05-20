@@ -1,0 +1,33 @@
+defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive.Show do
+  use Buzzword.Bingo.LiveView.ClientWeb, :live_view
+
+  alias Buzzword.Bingo.Engine
+
+  def mount(%{"id" => game_name}, session, socket) do
+
+    if player do
+      {:ok, socket}
+    else
+      PhoenixLiveSession.put_session(
+        socket,
+        "return_to",
+        game_show_path(socket, game_name)
+      )
+
+      {:ok, push_redirect(socket, to: player_new_path(socket))}
+    end
+  end
+
+  def handle_params(%{"id" => game_name}, _url, socket) do
+    socket = assign(socket, :game_name, game_name)
+    Engine.game_summary(game_name) |> IO.inspect(label: "||| SUMMARY |||")
+    {:noreply, socket}
+  end
+
+  def render(assigns) do
+    ~H"""
+    <h1 class="text-center bg-indigo-100">Play Game</h1>
+    <p><%= IO.inspect(@game_name) %></p>
+    """
+  end
+end

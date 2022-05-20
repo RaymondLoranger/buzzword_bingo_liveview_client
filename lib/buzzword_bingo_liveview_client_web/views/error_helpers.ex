@@ -1,11 +1,11 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.ErrorHelpers do
+defmodule Buzzword.Bingo.LiveView.ClientWeb.ErrorHelpers do
   @moduledoc """
   Conveniences for translating and building error messages.
   """
 
   use Phoenix.HTML
 
-  alias Buzzword.Bingo.Liveview.ClientWeb.Gettext, as: Webtext
+  alias Buzzword.Bingo.LiveView.ClientWeb.Gettext, as: Webtext
 
   @doc """
   Generates tag for inlined form input errors.

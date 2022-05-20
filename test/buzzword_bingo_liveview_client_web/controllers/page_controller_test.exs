@@ -1,5 +1,5 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.PageControllerTest do
-  use Buzzword.Bingo.Liveview.ClientWeb.ConnCase
+defmodule Buzzword.Bingo.LiveView.ClientWeb.PageControllerTest do
+  use Buzzword.Bingo.LiveView.ClientWeb.ConnCase
 
   test "GET /", %{conn: conn} do
     conn = get(conn, "/")

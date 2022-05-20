@@ -8,26 +8,28 @@
 import Config
 
 config :buzzword_bingo_liveview_client,
-  namespace: Buzzword.Bingo.Liveview.Client
+  namespace: Buzzword.Bingo.LiveView.Client
 
 # Configures the endpoint
 config :buzzword_bingo_liveview_client,
-       Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+       Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
        url: [host: "localhost"],
        render_errors: [
-         view: Buzzword.Bingo.Liveview.ClientWeb.ErrorView,
+         view: Buzzword.Bingo.LiveView.ClientWeb.ErrorView,
          accepts: ~w(html json),
          layout: false
        ],
-       pubsub_server: Buzzword.Bingo.Liveview.Client.PubSub,
+       pubsub_server: Buzzword.Bingo.LiveView.Client.PubSub,
        live_view: [signing_salt: "wAB7v6vM"]
 
 # Configure esbuild (the version is required)
 config :esbuild,
   version: "0.14.0",
   default: [
-    args:
-      ~w(js/app.js --bundle --target=es2017 --outdir=../priv/static/assets --external:/fonts/* --external:/images/*),
+    args: ~w(
+      js/app.js --bundle --target=es2017 --outdir=../priv/static/assets
+      --external:/fonts/* --external:/images/*
+    ),
     cd: Path.expand("../assets", __DIR__),
     env: %{"NODE_PATH" => Path.expand("../deps", __DIR__)}
   ]

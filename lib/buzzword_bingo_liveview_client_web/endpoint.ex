@@ -1,4 +1,4 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.Endpoint do
+defmodule Buzzword.Bingo.LiveView.ClientWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :buzzword_bingo_liveview_client
 
   # The session will be stored in the cookie and signed,
@@ -46,5 +46,5 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.Endpoint do
   plug Plug.MethodOverride
   plug Plug.Head
   plug Plug.Session, @session_options
-  plug Buzzword.Bingo.Liveview.ClientWeb.Router
+  plug Buzzword.Bingo.LiveView.ClientWeb.Router
 end

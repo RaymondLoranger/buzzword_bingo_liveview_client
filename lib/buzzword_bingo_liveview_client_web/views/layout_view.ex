@@ -1,5 +1,5 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.LayoutView do
-  use Buzzword.Bingo.Liveview.ClientWeb, :view
+defmodule Buzzword.Bingo.LiveView.ClientWeb.LayoutView do
+  use Buzzword.Bingo.LiveView.ClientWeb, :view
 
   # Phoenix LiveDashboard is available only in development by default,
   # so we instruct Elixir to not warn if the dashboard route is missing.

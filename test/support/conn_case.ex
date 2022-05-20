@@ -1,4 +1,4 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.ConnCase do
+defmodule Buzzword.Bingo.LiveView.ClientWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -11,7 +11,7 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.ConnCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Buzzword.Bingo.Liveview.ClientWeb.ConnCase, async: true`,
+  by setting `use Buzzword.Bingo.LiveView.ClientWeb.ConnCase, async: true`,
   although this option is not recommended for other databases.
   """
 
@@ -22,12 +22,12 @@ defmodule Buzzword.Bingo.Liveview.ClientWeb.ConnCase do
       # Import conveniences for testing with connections
       import Plug.Conn
       import Phoenix.ConnTest
-      import Buzzword.Bingo.Liveview.ClientWeb.ConnCase
+      import Buzzword.Bingo.LiveView.ClientWeb.ConnCase
 
-      alias Buzzword.Bingo.Liveview.ClientWeb.Router.Helpers, as: Routes
+      alias Buzzword.Bingo.LiveView.ClientWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint Buzzword.Bingo.Liveview.ClientWeb.Endpoint
+      @endpoint Buzzword.Bingo.LiveView.ClientWeb.Endpoint
     end
   end
 

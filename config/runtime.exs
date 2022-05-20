@@ -10,7 +10,7 @@ import Config
 # Start the phoenix server if environment is set and running in a release
 if System.get_env("PHX_SERVER") && System.get_env("RELEASE_NAME") do
   config :buzzword_bingo_liveview_client,
-         Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+         Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
          server: true
 end
 
@@ -31,7 +31,7 @@ if config_env() == :prod do
   port = String.to_integer(System.get_env("PORT") || "4000")
 
   config :buzzword_bingo_liveview_client,
-         Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+         Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
          url: [host: host, port: 443],
          http: [
            # Enable IPv6 and bind on all interfaces.
@@ -49,7 +49,7 @@ if config_env() == :prod do
   # to start each relevant endpoint:
   #
   #     config :buzzword_bingo_liveview_client,
-  #       Buzzword.Bingo.Liveview.ClientWeb.Endpoint,
+  #       Buzzword.Bingo.LiveView.ClientWeb.Endpoint,
   #       server: true
   #
   # Then you can assemble a release by calling `mix release`.

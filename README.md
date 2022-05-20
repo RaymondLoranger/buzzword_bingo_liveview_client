@@ -1,4 +1,4 @@
-# Buzzword.Bingo.Liveview.Client
+# Buzzword.Bingo.LiveView.Client
 
 To start your Phoenix server:
 

@@ -5,8 +5,6 @@ defmodule Buzzword.Bingo.LiveView.Client.GameSize do
 
   alias __MODULE__
 
-  @game_size_message "Must be between 3 and 5"
-  @required "Can't be blank"
   @primary_key false
 
   embedded_schema do
@@ -17,8 +15,7 @@ defmodule Buzzword.Bingo.LiveView.Client.GameSize do
   def changeset(game_size, attrs) do
     game_size
     |> cast(attrs, [:game_size])
-    |> validate_required([:game_size], message: @required)
-    |> validate_inclusion(:game_size, 3..5, message: @game_size_message)
+    |> validate_inclusion(:game_size, 3..5, message: "must be 3 to 5")
   end
 
   @doc """

@@ -1,5 +1,5 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.ErrorView do
-  use Buzzword.Bingo.Liveview.ClientWeb, :view
+defmodule Buzzword.Bingo.LiveView.ClientWeb.ErrorView do
+  use Buzzword.Bingo.LiveView.ClientWeb, :view
 
   # If you want to customize a particular status code
   # for a certain format, you may uncomment below.

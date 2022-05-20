@@ -1,5 +1,5 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.PageController do
-  use Buzzword.Bingo.Liveview.ClientWeb, :controller
+defmodule Buzzword.Bingo.LiveView.ClientWeb.PageController do
+  use Buzzword.Bingo.LiveView.ClientWeb, :controller
 
   def index(conn, _params) do
     render(conn, "index.html")

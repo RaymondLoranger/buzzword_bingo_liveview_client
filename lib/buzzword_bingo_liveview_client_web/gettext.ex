@@ -1,11 +1,11 @@
-defmodule Buzzword.Bingo.Liveview.ClientWeb.Gettext do
+defmodule Buzzword.Bingo.LiveView.ClientWeb.Gettext do
   @moduledoc """
   A module providing Internationalization with a gettext-based API.
 
   By using [Gettext](https://hexdocs.pm/gettext),
   your module gains a set of macros for translations, for example:
 
-      import Buzzword.Bingo.Liveview.ClientWeb.Gettext
+      import Buzzword.Bingo.LiveView.ClientWeb.Gettext
 
       # Simple translation
       gettext("Here is the string to translate")
