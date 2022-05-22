@@ -2,89 +2,107 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   use Buzzword.Bingo.LiveView.ClientWeb, :live_view
   use Buzzword.Bingo.LiveView.ClientWeb, :aliases
 
-  @empty_form %{"user" => %{"name" => "", "color" => ""}}
+  require Logger
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, return_to: nil, player: nil)}
+    {:ok, assign(socket, player: nil, topic: nil, players: [], squares: [])}
   end
 
   def handle_params(params, _url, socket) do
     {:noreply, apply_action(socket, socket.assigns.live_action, params)}
   end
 
-  def render(assigns) when assigns.live_action == :login do
-    ~H"""
-    <.live_component module={UserFormComp} id="user" return_to={@return_to} />
-    """
-  end
-
-  def render(assigns) when assigns.live_action == :new do
-    ~H"""
-    <.live_component module={GameSizeFormComp} id="size" />
-    """
-  end
-
-  def render(assigns) when assigns.live_action == :show do
-    ~H"""
-    <h1 class="text-center bg-indigo-200">Play Bingo</h1>
-    """
-  end
-
-  def handle_event("validate", @empty_form, socket), do: {:noreply, socket}
-
   def handle_event("validate", %{"user" => user}, socket) do
-    changeset = %User{} |> User.change(user) |> struct(action: :insert)
-    {:noreply, assign(socket, :changeset, changeset)}
+    changeset = User.changeset(user) |> struct(action: :insert)
+    {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"user" => user}, socket) do
-    socket = assign(socket, :player, Player.new(user["name"], user["color"]))
-    {:noreply, push_patch(socket, to: socket.assigns.return_to)}
+    case User.apply_insert(user) do
+      {:ok, user} ->
+        player = Player.new(user.name, user.color)
+        socket = assign(socket, player: player)
+        {:noreply, push_patch(socket, to: socket.assigns.return_to)}
+
+      {:error, changeset} ->
+        {:noreply, assign(socket, changeset: changeset)}
+    end
   end
 
-  def handle_info({:new_game, game_name}, socket) do
-    socket = assign(socket, :game_name, game_name)
-    {:noreply, put_flash(socket, :info, "New game: #{game_name}")}
+  # def handle_info({:square_click, square}, socket) do
+  #   Endpoint.broadcast(socket.assigns.topic, "square-click", square)
+  #   {:noreply, put_flash(socket, :info, "Square #{square.phrase} clicked")}
+  # end
+
+  def handle_info(%Broadcast{event: "square-click", payload: square}, socket) do
+    IO.inspect(square, label: "-- Square broadcasted!!! --")
+    {:noreply, update(socket, :squares, &[square | &1])}
+  end
+
+  def handle_info(%Broadcast{event: "presence_diff"} = msg, socket) do
+    %Broadcast{payload: %{joins: joins, leaves: leaves}, topic: _topic} = msg
+    IO.inspect(joins, label: "-- presence joins --")
+    IO.inspect(leaves, label: "-- presence leaves --")
+    players = Presence.list(socket.assigns.topic)
+    Logger.info(players: players)
+    {:noreply, assign(socket, players: Map.keys(players))}
   end
 
   def handle_info(msg, socket) when is_binary(msg) do
-    {:noreply, put_flash(socket, :error, msg)}
+    {:noreply, put_flash(socket, :info, msg)}
   end
 
   def handle_info(msg, socket) do
-    {:noreply, put_flash(socket, :error, "#{inspect(msg)}")}
+    Logger.error("""
+    *** UNKNOWN MESSAGE RECEIVED ***
+    #{inspect(msg)}
+    """)
+
+    {:noreply, socket}
   end
 
   ## Private functions
 
-  # "/games"
-  defp apply_action(socket, :login, _params) do
-    return_to = socket.assigns.return_to || Routes.game_path(socket, :new)
-    assign(socket, page_title: "User info", return_to: return_to)
+  # /login or /login/:to
+  defp apply_action(socket, :login, params) do
+    return_to = params["to"] || Routes.game_path(socket, :new)
+
+    assign(socket,
+      page_title: "User login",
+      changeset: User.changeset(),
+      return_to: return_to
+    )
   end
 
-  # "/games/new"
+  # /games/new
   defp apply_action(socket, :new, _params) when is_nil(socket.assigns.player) do
-    # Player required...
-    socket
-    |> assign(:return_to, Routes.game_path(socket, :new))
-    |> push_patch(to: Routes.game_path(socket, :login))
+    return_to = Routes.game_path(socket, :new)
+    push_patch(socket, to: Routes.game_path(socket, :login, return_to))
   end
 
   defp apply_action(socket, :new, _params) do
     assign(socket, :page_title, "Game size")
   end
 
-  # "/games/:id"
+  # /games/:id
   defp apply_action(socket, :show, %{"id" => game_name})
        when is_nil(socket.assigns.player) do
-    # Player required
-    socket
-    |> assign(:return_to, Routes.game_path(socket, :show, game_name))
-    |> push_patch(to: Routes.game_path(socket, :login))
+    return_to = Routes.game_path(socket, :show, game_name)
+    push_patch(socket, to: Routes.game_path(socket, :login, return_to))
   end
 
   defp apply_action(socket, :show, %{"id" => game_name}) do
-    assign(socket, :page_title, "Game #{game_name}")
+    topic = "game:" <> game_name
+    Endpoint.subscribe(topic)
+    player = socket.assigns.player
+    meta = %{color: player.color, points: 0}
+    Presence.track(self(), topic, player.name, meta)
+
+    assign(socket,
+      page_title: "Game #{game_name}",
+      game_name: game_name,
+      player: player,
+      topic: topic
+    )
   end
 end

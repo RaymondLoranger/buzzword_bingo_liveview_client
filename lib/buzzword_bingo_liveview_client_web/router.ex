@@ -19,7 +19,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.Router do
 
     get "/", PageController, :index
 
-    live "/games", GameLive, :login
+    live "/login", GameLive, :login
+    live "/login/:to", GameLive, :login
     live "/games/new", GameLive, :new
     live "/games/:id", GameLive, :show
   end
