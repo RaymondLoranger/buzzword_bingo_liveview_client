@@ -7,7 +7,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
       <div>Who's Playing</div>
       <ul>
         <%= for player <- @players do %>
-          <li><%= player %></li>
+          <li><%= player.name %> - <%= player.color %></li>
         <% end %>
       </ul>
     </div>

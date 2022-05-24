@@ -5,7 +5,16 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   require Logger
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, player: nil, topic: nil, players: [], squares: [])}
+    socket =
+      assign(socket,
+        player: nil,
+        topic: nil,
+        size: nil,
+        players: [],
+        squares: []
+      )
+
+    {:ok, socket, temporary_assigns: [squares: []]}
   end
 
   def handle_params(params, _url, socket) do
@@ -44,8 +53,30 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     IO.inspect(joins, label: "-- presence joins --")
     IO.inspect(leaves, label: "-- presence leaves --")
     players = Presence.list(socket.assigns.topic)
-    Logger.info(players: players)
-    {:noreply, assign(socket, players: Map.keys(players))}
+    IO.inspect(players, label: "-- presence list --")
+
+    # players =
+    #   players
+    #   |> Enum.map(fn {name, %{metas: [%{color: color} | _]}} ->
+    #     %{id: name <> color, name: name, color: color, points: 0, marked: 0}
+    #   end)
+
+    # players =
+    #   for {name, %{metas: metas}} <- players do
+    #     for %{color: _, online_at: _, phx_ref: _} = meta <- metas do
+    #       Map.merge(meta, %{name: name, points: 0, marked: 0})
+    #     end
+    #   end
+    #   |> List.flatten()
+
+    players =
+      players
+      |> Enum.map(fn {name, %{metas: [meta | _]}} ->
+        Map.merge(meta, %{name: name, points: 0, marked: 0})
+      end)
+
+    IO.inspect(players, label: "-- players list --")
+    {:noreply, assign(socket, players: players)}
   end
 
   def handle_info(msg, socket) when is_binary(msg) do
@@ -95,14 +126,24 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     topic = "game:" <> game_name
     Endpoint.subscribe(topic)
     player = socket.assigns.player
-    meta = %{color: player.color, points: 0}
+
+    meta = %{
+      color: player.color,
+      online_at: DateTime.utc_now() |> DateTime.to_string()
+    }
+
     Presence.track(self(), topic, player.name, meta)
+    squares = Engine.game_summary(game_name).squares
+    size = length(squares)
+    squares = List.flatten(squares)
 
     assign(socket,
       page_title: "Game #{game_name}",
       game_name: game_name,
       player: player,
-      topic: topic
+      topic: topic,
+      size: size,
+      squares: squares
     )
   end
 end
