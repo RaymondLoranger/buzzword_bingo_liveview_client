@@ -5,16 +5,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   require Logger
 
   def mount(_params, _session, socket) do
-    socket =
-      assign(socket,
-        player: nil,
-        topic: nil,
-        size: nil,
-        players: [],
-        squares: []
-      )
-
-    {:ok, socket, temporary_assigns: [squares: []]}
+    assigns = [player: nil, topic: nil, size: nil, players: %{}, squares: []]
+    {:ok, assign(socket, assigns), temporary_assigns: [squares: []]}
   end
 
   def handle_params(params, _url, socket) do
@@ -52,8 +44,22 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     %Broadcast{payload: %{joins: joins, leaves: leaves}, topic: _topic} = msg
     IO.inspect(joins, label: "-- presence joins --")
     IO.inspect(leaves, label: "-- presence leaves --")
-    players = Presence.list(socket.assigns.topic)
-    IO.inspect(players, label: "-- presence list --")
+    # players = Presence.list(socket.assigns.topic)
+    # IO.inspect(players, label: "-- presence list --")
+    players = socket.assigns.players
+    IO.inspect(players, label: "-- socket assigns players --")
+
+    players =
+      Enum.reduce(joins, players, fn {name, %{metas: [meta | _]}}, players ->
+        Map.put_new(players, name, %{color: meta.color, score: 0, marked: 0})
+      end)
+
+    players =
+      Enum.reduce(leaves, players, fn {name, %{metas: [_meta | _]}}, players ->
+        Map.delete(players, name)
+      end)
+
+    IO.inspect(players, label: "++ socket assigns players ++")
 
     # players =
     #   players
@@ -69,13 +75,13 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     #   end
     #   |> List.flatten()
 
-    players =
-      players
-      |> Enum.map(fn {name, %{metas: [meta | _]}} ->
-        Map.merge(meta, %{name: name, points: 0, marked: 0})
-      end)
+    # players =
+    #   players
+    #   |> Enum.map(fn {name, %{metas: [meta | _]}} ->
+    #     Map.merge(meta, %{name: name, points: 0, marked: 0})
+    #   end)
 
-    IO.inspect(players, label: "-- players list --")
+    # IO.inspect(players, label: "-- players list --")
     {:noreply, assign(socket, players: players)}
   end
 
@@ -126,24 +132,19 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     topic = "game:" <> game_name
     Endpoint.subscribe(topic)
     player = socket.assigns.player
-
-    meta = %{
-      color: player.color,
-      online_at: DateTime.utc_now() |> DateTime.to_string()
-    }
-
+    now = DateTime.utc_now() |> DateTime.to_string()
+    meta = %{color: player.color, online_at: now}
     Presence.track(self(), topic, player.name, meta)
-    squares = Engine.game_summary(game_name).squares
+
+    summary = Engine.game_summary(game_name)
+    %Summary{squares: squares, scores: scores, winner: _winner} = summary
     size = length(squares)
     squares = List.flatten(squares)
 
-    assign(socket,
-      page_title: "Game #{game_name}",
-      game_name: game_name,
-      player: player,
-      topic: topic,
-      size: size,
-      squares: squares
-    )
+    assigns =
+      [page_title: "Game #{game_name}", game_name: game_name, size: size] ++
+        [player: player, topic: topic, squares: squares, players: scores]
+
+    assign(socket, assigns)
   end
 end
