@@ -30,58 +30,25 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     end
   end
 
-  # def handle_info({:square_click, square}, socket) do
-  #   Endpoint.broadcast(socket.assigns.topic, "square-click", square)
-  #   {:noreply, put_flash(socket, :info, "Square #{square.phrase} clicked")}
-  # end
-
-  def handle_info(%Broadcast{event: "square-click", payload: square}, socket) do
-    IO.inspect(square, label: "-- Square broadcasted!!! --")
+  def handle_info(%Broadcast{event: "square_fix", payload: square}, socket) do
     {:noreply, update(socket, :squares, &[square | &1])}
   end
 
-  def handle_info(%Broadcast{event: "presence_diff"} = msg, socket) do
-    %Broadcast{payload: %{joins: joins, leaves: leaves}, topic: _topic} = msg
-    IO.inspect(joins, label: "-- presence joins --")
-    IO.inspect(leaves, label: "-- presence leaves --")
-    # players = Presence.list(socket.assigns.topic)
-    # IO.inspect(players, label: "-- presence list --")
-    players = socket.assigns.players
-    IO.inspect(players, label: "-- socket assigns players --")
+  def handle_info(%Broadcast{event: "score_fix", payload: score}, socket) do
+    players = Map.merge(socket.assigns.players, score)
+    {:noreply, assign(socket, players: players)}
+  end
+
+  def handle_info(%Broadcast{event: "presence_diff"}, socket) do
+    %Summary{scores: scores} = Engine.game_summary(socket.assigns.game_name)
+    players = Presence.list(socket.assigns.topic)
 
     players =
-      Enum.reduce(joins, players, fn {name, %{metas: [meta | _]}}, players ->
-        Map.put_new(players, name, %{color: meta.color, score: 0, marked: 0})
-      end)
+      for {name, %{metas: [meta | _]}} <- players, into: %{} do
+        {name, meta}
+      end
+      |> Map.merge(scores)
 
-    players =
-      Enum.reduce(leaves, players, fn {name, %{metas: [_meta | _]}}, players ->
-        Map.delete(players, name)
-      end)
-
-    IO.inspect(players, label: "++ socket assigns players ++")
-
-    # players =
-    #   players
-    #   |> Enum.map(fn {name, %{metas: [%{color: color} | _]}} ->
-    #     %{id: name <> color, name: name, color: color, points: 0, marked: 0}
-    #   end)
-
-    # players =
-    #   for {name, %{metas: metas}} <- players do
-    #     for %{color: _, online_at: _, phx_ref: _} = meta <- metas do
-    #       Map.merge(meta, %{name: name, points: 0, marked: 0})
-    #     end
-    #   end
-    #   |> List.flatten()
-
-    # players =
-    #   players
-    #   |> Enum.map(fn {name, %{metas: [meta | _]}} ->
-    #     Map.merge(meta, %{name: name, points: 0, marked: 0})
-    #   end)
-
-    # IO.inspect(players, label: "-- players list --")
     {:noreply, assign(socket, players: players)}
   end
 
@@ -91,7 +58,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
 
   def handle_info(msg, socket) do
     Logger.error("""
-    *** UNKNOWN MESSAGE RECEIVED ***
+    *** Unknown message ***
     #{inspect(msg)}
     """)
 
@@ -132,19 +99,18 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     topic = "game:" <> game_name
     Endpoint.subscribe(topic)
     player = socket.assigns.player
-    now = DateTime.utc_now() |> DateTime.to_string()
-    meta = %{color: player.color, online_at: now}
+    meta = %{color: player.color, score: 0, marked: 0}
     Presence.track(self(), topic, player.name, meta)
-
-    summary = Engine.game_summary(game_name)
-    %Summary{squares: squares, scores: scores, winner: _winner} = summary
+    %Summary{squares: squares} = Engine.game_summary(game_name)
     size = length(squares)
     squares = List.flatten(squares)
 
-    assigns =
-      [page_title: "Game #{game_name}", game_name: game_name, size: size] ++
-        [player: player, topic: topic, squares: squares, players: scores]
-
-    assign(socket, assigns)
+    assign(socket,
+      page_title: "Game #{game_name}",
+      game_name: game_name,
+      topic: topic,
+      size: size,
+      squares: squares
+    )
   end
 end

@@ -20,7 +20,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
       class="flex flex-col border-2 border-indigo-200 rounded-md w-full h-24
       p-2 text-indigo-700 text-xs leading-3"
       id={@square.phrase}
-      phx-click="square-click"
+      phx-click="square_click"
       phx-value-id={@square.phrase}
       phx-target={@target}
     >
