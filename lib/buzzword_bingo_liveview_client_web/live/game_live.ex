@@ -5,8 +5,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   require Logger
 
   def mount(_params, _session, socket) do
-    assigns = [player: nil, topic: nil, size: nil, players: %{}, squares: []]
-    {:ok, assign(socket, assigns), temporary_assigns: [squares: []]}
+    {:ok, assign(socket, player: nil, players: %{}),
+     temporary_assigns: [squares: []]}
   end
 
   def handle_params(params, _url, socket) do
@@ -58,7 +58,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
 
   def handle_info(msg, socket) do
     Logger.error("""
-    *** Unknown message ***
+    ::: Unknown message :::
     #{inspect(msg)}
     """)
 
