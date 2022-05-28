@@ -8,8 +8,15 @@
  * └────────────────────────────────────────────────────┘
  */
 
+/*
 body {
   @apply antialiased relative bg-cool-gray-200 font-sans;
+}
+*/
+
+body {
+  background-color: rgb(219, 223, 229);
+  background-image: url("data:image/svg+xml,%3Csvg width='70' height='70' viewBox='0 0 70 70' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%238064a2' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 0h35v35H0V0zm5 5h25v25H5V5zm5 5h15v15H10V10zm5 5h5v5h-5v-5zM40 5h25v25H40V5zm5 5h15v15H45V10zm5 5h5v5h-5v-5zM70 35H35v35h35V35zm-5 5H40v25h25V40zm-5 5H45v15h15V45zm-5 5h-5v5h5v-5zM30 40H5v25h25V40zm-5 5H10v15h15V45zm-5 5h-5v5h5v-5z'/%3E%3C/g%3E%3C/svg%3E");
 }
 
 header .container {
@@ -59,12 +66,27 @@ ul.examples li a {
  */
 
 .square {
-  @apply flex flex-col border-2 border-indigo-200 rounded-md p-1
+  @apply flex flex-col border-2 border-indigo-300 rounded-md p-1
   aspect-square text-indigo-700 text-xs leading-3;
 }
 
+.squares {
+  @apply grid gap-2 w-2/3 auto-rows-max auto-cols-max;
+}
+
 .color-checked {
-  @apply absolute hidden w-4 h-4 peer-checked:block top-2 right-3 text-lg;
+  @apply absolute hidden w-4 h-4 peer-checked:block top-1 right-3 text-2xl
+  text-cool-gray-700;
+}
+
+.color {
+  @apply flex p-5 border border-gray-400 rounded-md cursor-pointer
+  focus:outline-none hover:scale-110 peer-checked:ring-green-500
+  peer-checked:ring-2 peer-checked:border-transparent;
+}
+
+.player-mark {
+  @apply h-2 w-2 px-2 mx-2 rounded-sm;
 }
 
 /*
@@ -73,6 +95,7 @@ ul.examples li a {
  * ╚═══════════════╝
  */
 
+/*
 main.container {
   @apply mx-auto w-11/12;
 }
@@ -112,11 +135,13 @@ main #posts .post-body {
 main .photos {
   @apply mt-2 flex flex-wrap gap-2;
 }
+*/
 
 /* main .photos .photo {
   @apply text-center p-4 m-4 border-2 border-cool-gray-300 rounded-xl;
 } */
 
+/*
 main .photos .photo img {
   @apply h-36 w-36 md:h-48 md:w-48 mx-auto object-center object-fill;
 }
@@ -225,6 +250,7 @@ textarea:focus {
   display: block;
   margin: 0.5rem 0;
 }
+*/
 
 /*
  * ┌────────────────────────────────────────────────┐

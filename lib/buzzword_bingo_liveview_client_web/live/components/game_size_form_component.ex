@@ -10,20 +10,23 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
   def render(assigns) do
     ~H"""
     <div id="game-size-form">
-      <.form
-        let={f}
-        for={@changeset}
-        phx-change="validate"
-        phx-submit="save"
-        phx-target={@myself}
-      >
-        <%= text_input(f, :game_size,
-          placeholder: "Game size",
-          phx_hook: "AutoFocus",
-          required: true
-        ) %>
-        <%= error_tag(f, :game_size) %>
-        <%= submit("Save", phx_disable_with: "Saving...") %>
+      <.form let={f} for={@changeset} phx-change="validate" phx-submit="save"
+          phx-target={@myself}>
+        <div class="flex justify-evenly">
+          <label>
+            <%= radio_button f, :value, 3, checked: true %> 3 x 3
+            <%= grid_glyph(%{size: 3}) %>
+          </label>
+          <label>
+            <%= radio_button f, :value, 4 %> 4 x 4
+            <%= grid_glyph(%{size: 4}) %>
+          </label>
+          <label>
+            <%= radio_button f, :value, 5 %> 5 x 5
+            <%= grid_glyph(%{size: 5}) %>
+          </label>
+        </div>
+        <%= submit "Start Game", phx_disable_with: "Starting..." %>
       </.form>
     </div>
     """
@@ -39,7 +42,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
       {:ok, game_size} ->
         game_name = Engine.haiku_name()
 
-        case Engine.new_game(game_name, game_size.game_size) do
+        case Engine.new_game(game_name, game_size.value) do
           {:ok, _game_pid} ->
             game_path = Routes.game_path(socket, :show, game_name)
             {:noreply, push_patch(socket, to: game_path)}
@@ -51,5 +54,17 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
+  end
+
+  ## Private functions
+
+  def grid_glyph(assigns) do
+    ~H"""
+    <div class={"grid grid-cols-#{@size} gap-2 w-40"}>
+      <%= for _n <- 1..(@size * @size) do %>
+        <div class="p-1 aspect-square bg-[#4f819c]"/>
+      <% end %>
+    </div>
+    """
   end
 end

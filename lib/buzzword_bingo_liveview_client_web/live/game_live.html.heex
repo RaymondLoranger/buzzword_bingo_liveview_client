@@ -1,25 +1,11 @@
 <%= case @live_action do %>
   <% :login -> %>
-    <.live_component
-      module={UserFormComponent}
-      id="user-form-component"
-      changeset={@changeset}
-      return_to={@return_to}
-    />
+    <.live_component module={UserFormComponent} id="user-form"
+        changeset={@changeset} return_to={@return_to}/>
   <% :new -> %>
-    <.live_component
-      module={GameSizeFormComponent}
-      id="game-size-form-component"
-    />
+    <.live_component module={GameSizeFormComponent} id="game-size-form"/>
   <% :show -> %>
-    <.live_component
-      module={GameComponent}
-      id="game-component"
-      game_name={@game_name}
-      player={@player}
-      topic={@topic}
-      size={@size}
-      squares={@squares}
-      players={@players}
-    />
+    <.live_component module={GameComponent} id="game" game_name={@game_name}
+        player={@player} topic={@topic} game_size={@game_size}
+        squares={@squares} players={@players}/>
 <% end %>

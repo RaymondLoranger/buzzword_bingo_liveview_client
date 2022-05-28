@@ -7,7 +7,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameComponent do
     <div id="game">
       <h1 class="text-center bg-indigo-200">Play Game <%= @game_name %></h1>
       <div class="flex">
-        <.squares let={square} squares={@squares} size={@size}>
+        <.squares let={square} squares={@squares} game_size={@game_size}>
           <.square square={square} target={@myself} />
         </.squares>
         <.players players={@players} />

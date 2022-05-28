@@ -8,8 +8,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
       <ul>
         <%= for {name, player} <- @players do %>
           <li>
-            <span class={"h-2 w-2 px-2 mx-2 rounded-sm bg-[#{player.color}]"}>
-            </span>
+            <span class={player_mark(player)}/>
             <span><%= name %></span>
             <span><%= player.score %></span>
             <span>(<%= player.marked %> squares)</span>
@@ -22,13 +21,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def square(assigns) do
     ~H"""
-    <div
-      class={square_class(@square.marked_by)}
-      id={@square.phrase}
-      phx-click="square_click"
-      phx-value-id={@square.phrase}
-      phx-target={@target}
-    >
+    <div class={square_class(@square)} id={@square.phrase} phx-target={@target}
+        phx-click="square_click" phx-value-id={@square.phrase}>
       <span><%= @square.phrase %></span>
       <span><%= @square.points %></span>
       <%= if @square.marked_by do %>
@@ -40,7 +34,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def squares(assigns) do
     ~H"""
-    <div class={squares_class(@size)} id="squares" phx-update="append">
+    <div class={squares_class(@game_size)} id="squares" phx-update="append">
       <%= for square <- @squares do %>
         <%= render_slot(@inner_block, square) %>
       <% end %>
@@ -50,10 +44,12 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   ## Private functions
 
-  defp squares_class(size) do
-    "grid grid-cols-#{size} gap-2 w-2/3 auto-rows-max auto-cols-max"
+  defp squares_class(game_size) do
+    "squares grid-cols-#{game_size}"
   end
 
-  defp square_class(marked_by) when is_nil(marked_by), do: "square"
-  defp square_class(marked_by), do: "square bg-[#{marked_by.color}]"
+  defp square_class(square) when is_nil(square.marked_by), do: "square"
+  defp square_class(square), do: "square bg-[#{square.marked_by.color}]"
+
+  defp player_mark(player), do: "player-mark bg-[#{player.color}]"
 end

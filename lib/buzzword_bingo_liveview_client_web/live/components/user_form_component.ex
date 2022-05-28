@@ -12,21 +12,22 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
   def render(assigns) do
     ~H"""
     <div id="user-form">
+      <h1>Welcome!</h1>
+      <h4>First up, we need your name and favorite color:</h4>
       <.form let={f} for={@changeset} phx-change="validate" phx-submit="save"
           class="flex items-center">
         <%= text_input f, :name, placeholder: "Name", phx_debounce: "999",
-              autofocus: true, required: true %>
+              phx_hook: "AutoFocus", required: true %>
         <%= error_tag(f, :name) %>
         <ul class="grid grid-cols-8 gap-x-3 mx-4 max-w-md mx-auto">
           <%= for color <- @colors do %>
             <li class="relative">
               <%= radio_button f, :color, color, class: "sr-only peer",
-                    checked: color == @color, phx_click: "color_clicked",
-                    phx_change: "color_changed", phx_target: @myself,
-                    id: color %>
+                    phx_target: @myself, phx_click: "color_clicked",
+                    id: color, checked: color == @color %>
               <label class={label_class(color)} for={color}/>
               <div class="color-checked">
-                ✔
+                ✓
               </div>
             </li>
           <% end %>
@@ -37,32 +38,11 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
     """
   end
 
-  def handle_event("color_changed", pl, socket) do
-    IO.inspect(socket.assigns, label: "((( socket.assigns in color_changed )))")
-    IO.inspect(pl, label: "((( payload )))")
-    {:noreply, socket}
-  end
-
-  def handle_event("color_clicked", pl, socket) do
-    IO.inspect(socket.assigns, label: "((( socket.assigns in color_clicked )))")
-    IO.inspect(pl, label: "((( payload )))")
-    {:noreply, socket}
+  def handle_event("color_clicked", %{"value" => color}, socket) do
+    {:noreply, assign(socket, color: color)}
   end
 
   ## Private functions
 
-  defp label_class(color) do
-    "flex p-5 bg-[#{color}] rounded-md cursor-pointer peer-checked:ring-2"
-  end
-
-  # defp color_li(color, checked?) do
-  #   """
-  #   <li>
-  #     <input class="sr-only peer" type="radio" value=#{color} name="color"
-  #         id=#{color} #{if checked?, do: "checked"} />
-  #     <label class="#{label_class(color)}" for=#{color} />
-  #   </li>
-  #   """
-  #   |> Phoenix.HTML.raw()
-  # end
+  defp label_class(color), do: "color bg-[#{color}]"
 end

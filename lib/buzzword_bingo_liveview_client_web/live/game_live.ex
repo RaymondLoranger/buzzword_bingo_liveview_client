@@ -14,14 +14,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   def handle_event("validate", %{"user" => user}, socket) do
-    IO.inspect(user, label: "--- on validate ---")
     changeset = User.changeset(user) |> struct(action: :insert)
     {:noreply, assign(socket, changeset: changeset)}
-  end
-
-  def handle_event("color_click", payload, socket) do
-    IO.inspect(payload, label: "--- on click ---")
-    {:noreply, socket}
   end
 
   def handle_event("save", %{"user" => user}, socket) do
@@ -108,14 +102,14 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     meta = %{color: player.color, score: 0, marked: 0}
     Presence.track(self(), topic, player.name, meta)
     %Summary{squares: squares} = Engine.game_summary(game_name)
-    size = length(squares)
+    game_size = length(squares)
     squares = List.flatten(squares)
 
     assign(socket,
       page_title: "Game #{game_name}",
       game_name: game_name,
       topic: topic,
-      size: size,
+      game_size: game_size,
       squares: squares
     )
   end

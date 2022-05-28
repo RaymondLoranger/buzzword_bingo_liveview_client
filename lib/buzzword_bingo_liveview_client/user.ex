@@ -6,8 +6,7 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
   alias __MODULE__
 
   @colors ["#a4deff", "#f9cedf", "#d3c5f1", "#acc9f5"] ++
-            ["#aeeace", "#96d7b9", "#fce8bd", "#fcd8ac"] ++
-            ["blue", "green", "red", "yellow", "orange"]
+            ["#aeeace", "#96d7b9", "#fce8bd", "#fcd8ac"]
   @primary_key false
 
   embedded_schema do
