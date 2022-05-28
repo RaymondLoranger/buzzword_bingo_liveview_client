@@ -1,9 +1,6 @@
 defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   use Phoenix.Component
 
-  @square_class "flex flex-col border-2 border-indigo-200 rounded-md p-1" <>
-                  " aspect-square text-indigo-700 text-xs leading-3"
-
   def players(assigns) do
     ~H"""
     <div>
@@ -47,7 +44,6 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
       <%= for square <- @squares do %>
         <%= render_slot(@inner_block, square) %>
       <% end %>
-      <span hidden class="grid-cols-3 grid-cols-4 grid-cols-5" />
     </div>
     """
   end
@@ -58,11 +54,6 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
     "grid grid-cols-#{size} gap-2 w-2/3 auto-rows-max auto-cols-max"
   end
 
-  defp square_class(marked_by) when is_nil(marked_by) do
-    @square_class
-  end
-
-  defp square_class(marked_by) do
-    @square_class <> " bg-[#{marked_by.color}]"
-  end
+  defp square_class(marked_by) when is_nil(marked_by), do: "square"
+  defp square_class(marked_by), do: "square bg-[#{marked_by.color}]"
 end

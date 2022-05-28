@@ -14,8 +14,14 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   def handle_event("validate", %{"user" => user}, socket) do
+    IO.inspect(user, label: "--- on validate ---")
     changeset = User.changeset(user) |> struct(action: :insert)
     {:noreply, assign(socket, changeset: changeset)}
+  end
+
+  def handle_event("color_click", payload, socket) do
+    IO.inspect(payload, label: "--- on click ---")
+    {:noreply, socket}
   end
 
   def handle_event("save", %{"user" => user}, socket) do

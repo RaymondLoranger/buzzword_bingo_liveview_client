@@ -14,6 +14,17 @@ module.exports = {
     // 'text-indigo-600',
     // 'text-purple-700',
     // 'text-pink-600',
+    'grid-cols-3',
+    'grid-cols-4',
+    'grid-cols-5',
+    'bg-[#a4deff]',
+    'bg-[#f9cedf]',
+    'bg-[#d3c5f1]',
+    'bg-[#acc9f5]',
+    'bg-[#aeeace]',
+    'bg-[#96d7b9]',
+    'bg-[#fce8bd]',
+    'bg-[#fcd8ac]',
     {
       pattern: /(border|text)-(green|blue|indigo|purple|pink)-(6|7|8)00/
     }

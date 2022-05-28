@@ -53,6 +53,21 @@ ul.examples li a {
 }
 
 /*
+ * ╔════════════════════════╗
+ * ║ ••• Buzzword Bingo ••• ║
+ * ╚════════════════════════╝
+ */
+
+.square {
+  @apply flex flex-col border-2 border-indigo-200 rounded-md p-1
+  aspect-square text-indigo-700 text-xs leading-3;
+}
+
+.color-checked {
+  @apply absolute hidden w-4 h-4 peer-checked:block top-2 right-3 text-lg;
+}
+
+/*
  * ╔═══════════════╗
  * ║ ••• Posts ••• ║
  * ╚═══════════════╝
