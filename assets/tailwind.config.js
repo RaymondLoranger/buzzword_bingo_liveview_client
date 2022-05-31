@@ -17,6 +17,7 @@ module.exports = {
     'grid-cols-3',
     'grid-cols-4',
     'grid-cols-5',
+    'grid-cols-6', // invalid game size
     'bg-[#a4deff]',
     'bg-[#f9cedf]',
     'bg-[#d3c5f1]',
@@ -25,6 +26,7 @@ module.exports = {
     'bg-[#96d7b9]',
     'bg-[#fce8bd]',
     'bg-[#fcd8ac]',
+    'bg-[#fefbe7]', // invalid player color
     {
       pattern: /(border|text)-(green|blue|indigo|purple|pink)-(6|7|8)00/
     }

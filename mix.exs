@@ -4,7 +4,7 @@ defmodule Buzzword.Bingo.LiveView.Client.MixProject do
   def project do
     [
       app: :buzzword_bingo_liveview_client,
-      version: "0.1.7",
+      version: "0.1.8",
       elixir: "~> 1.12",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:gettext] ++ Mix.compilers(),
@@ -53,6 +53,7 @@ defmodule Buzzword.Bingo.LiveView.Client.MixProject do
       # {:ex_doc, "~> 0.22", only: :dev, runtime: false},
       {:logger_file_backend, "~> 0.0.11"},
       {:log_reset, "~> 0.1"},
+      {:persist_config, "~> 0.4", runtime: false},
       {:phx_formatter, "~> 0.1", only: :dev, runtime: false}
     ]
   end

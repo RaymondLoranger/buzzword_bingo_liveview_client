@@ -39,9 +39,11 @@ section a {
   @apply max-w-6xl mx-auto px-6;
 }
 
+/*
 h1 {
   @apply text-center text-cool-gray-900 font-extrabold text-4xl mb-8;
 }
+*/
 
 ul.examples {
   @apply mt-8 text-2xl mx-auto max-w-xs list-disc;
@@ -65,13 +67,40 @@ ul.examples li a {
  * ╚════════════════════════╝
  */
 
+.letter {
+  font-size: 1.5em;
+  padding: 5px 8px;
+  font-weight: 800;
+  color: rgb(41, 41, 41);
+  background: #fff;
+  margin-right: -7px;
+  border: 1px solid #CCC;
+}
+
+.letter:hover {
+  color: #fff;
+  /* background: rgb(41, 41, 41); */
+  background: rgb(13, 114, 173);
+}
+
+.letter.inverse {
+  background: rgb(41, 41, 41);
+  color: #fff;
+}
+
+.letter.inverse:hover {
+  /* background: rgb(41, 41, 41); */
+  background: rgb(127, 177, 206);
+  color: #fff;
+}
+
 .square {
   @apply flex flex-col border-2 border-indigo-300 rounded-md p-1
   aspect-square text-indigo-700 text-xs leading-3;
 }
 
 .squares {
-  @apply grid gap-2 w-2/3 auto-rows-max auto-cols-max;
+  @apply grid gap-2 w-7/12 max-w-xl auto-rows-max auto-cols-max;
 }
 
 .color-checked {
@@ -87,6 +116,18 @@ ul.examples li a {
 
 .player-mark {
   @apply h-2 w-2 px-2 mx-2 rounded-sm;
+}
+
+form .invalid-feedback {
+  @apply m-0.5 text-sm font-medium italic capitalize text-red-600;
+}
+
+#user-form h1 {
+  @apply text-center text-cool-gray-900 font-extrabold text-4xl mb-8;
+}
+
+footer a {
+  @apply text-blue-800 hover:brightness-150;
 }
 
 /*
@@ -390,12 +431,12 @@ textarea:focus {
   @apply text-center bg-cool-gray-400 rounded-md py-8 px-4 mt-0 mb-4 mx-12;
 }
 
-.phx-hero  h1 {
+.phx-hero h1 {
   font-weight: 500;
   margin-bottom: 1rem;
 }
 
-.phx-hero  p {
+.phx-hero p {
   font-weight: 400;
   font-size: 125%;
   margin-bottom: 2rem;
@@ -415,7 +456,7 @@ textarea:focus {
 }
 
 .phx-logo {
-  min-width: 300px;
+  /* min-width: 300px; */
   margin: 1rem;
   display: block;
 }
@@ -430,7 +471,7 @@ header {
   width: 100%;
   background: #fdfdfd;
   border-bottom: 1px solid #eaeaea;
-  margin-bottom: 2rem;
+  /* margin-bottom: 2rem; */
 }
 header section {
   align-items: center;
@@ -438,12 +479,14 @@ header section {
   flex-direction: column;
   justify-content: space-between;
 }
+/*
 header section :first-child {
-  order: 2;
+  order: 3;
 }
 header section :last-child {
   order: 1;
 }
+*/
 
 header nav ul,
 header nav li {

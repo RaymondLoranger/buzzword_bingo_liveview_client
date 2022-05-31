@@ -9,35 +9,67 @@
           suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet"
         href={Routes.static_path(@conn, "/assets/app.css")}/>
-
     <script defer phx-track-static type="text/javascript"
         src={Routes.static_path(@conn, "/assets/app.js")}/>
   </head>
 
-  <body>
+  <body class="flex flex-col h-screen justify-between">
+
     <header>
       <section class="container">
-        <nav>
-          <ul>
-            <li>
-              <a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a>
-            </li>
-
-            <%= if function_exported?(Routes, :live_dashboard_path, 2) do %>
-              <li>
-                <%= link "LiveDashboard",
-                      to: Routes.live_dashboard_path(@conn, :home) %>
-              </li>
-            <% end %>
-          </ul>
-        </nav>
-
         <a href="https://phoenixframework.org/" class="phx-logo">
           <img src={Routes.static_path(@conn, "/images/phoenix.png")}
               alt="Phoenix Framework Logo"/>
         </a>
+        <div class="flex gap-x-1.5 mb-1">
+          <span class="letter inverse">B</span>
+          <span class="letter">U</span>
+          <span class="letter">Z</span>
+          <span class="letter">Z</span>
+          <span class="letter">W</span>
+          <span class="letter">O</span>
+          <span class="letter">R</span>
+          <span class="letter">D</span>
+          <span class="letter inverse">B</span>
+          <span class="letter">I</span>
+          <span class="letter">N</span>
+          <span class="letter">G</span>
+          <span class="letter">O</span>
+        </div>
+        <nav>
+          <ul>
+            <li>
+              <%= link "LiveDashboard",
+                    to: Routes.live_dashboard_path(@conn, :home) %>
+            </li>
+          </ul>
+        </nav>
       </section>
     </header>
-    <%= @inner_content %>
+
+    <main class="mt-4 h-full">
+      <%= @inner_content %>
+    </main>
+
+    <footer class="text-center my-8 p-2">
+      built with
+      <a href="http://elixir-lang.org/" target="_blank">
+        Elixir
+      </a> +
+      <a href="http://www.phoenixframework.org/" target="_blank">
+        Phoenix
+      </a> +
+      <a href="https://hexdocs.pm/phoenix_live_view/Phoenix.LiveView.html"
+          target="_blank">
+        LiveView
+      </a> +
+      <a href="https://tailwindcss.com/" target="_blank">
+        Tailwind CSS
+      </a> by
+      <a href="https://github.com/RaymondLoranger" target="_blank">
+        Raymond Loranger
+      </a>
+    </footer>
+
   </body>
 </html>

@@ -14,12 +14,15 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   def handle_event("validate", %{"user" => user}, socket) do
-    changeset = User.changeset(user) |> struct(action: :insert)
+    players = presence_players(socket.assigns.topic)
+    changeset = User.changeset(user, players) |> struct(action: :insert)
     {:noreply, assign(socket, changeset: changeset)}
   end
 
   def handle_event("save", %{"user" => user}, socket) do
-    case User.apply_insert(user) do
+    players = presence_players(socket.assigns.topic)
+
+    case User.apply_insert(user, players) do
       {:ok, user} ->
         player = Player.new(user.name, user.color)
         socket = assign(socket, player: player)
@@ -41,13 +44,12 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
 
   def handle_info(%Broadcast{event: "presence_diff"}, socket) do
     %Summary{scores: scores} = Engine.game_summary(socket.assigns.game_name)
-    players = Presence.list(socket.assigns.topic)
+    players = presence_players(socket.assigns.topic)
 
     players =
-      for {name, %{metas: [meta | _]}} <- players, into: %{} do
-        {name, meta}
+      for {name, meta} <- players, into: %{} do
+        {name, Map.merge(meta, scores[name] || %{})}
       end
-      |> Map.merge(scores)
 
     {:noreply, assign(socket, players: players)}
   end
@@ -67,13 +69,21 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
 
   ## Private functions
 
-  # /login or /login/:to
+  defp presence_players(topic) do
+    for {name, %{metas: [meta | _]}} <- Presence.list(topic), into: %{} do
+      {name, meta}
+    end
+  end
+
+  # /login or /login/:to or /login/:to?game_name=...
   defp apply_action(socket, :login, params) do
+    topic = "game:#{params["game_name"]}"
     return_to = params["to"] || Routes.game_path(socket, :new)
 
     assign(socket,
       page_title: "User login",
       changeset: User.changeset(),
+      topic: topic,
       return_to: return_to
     )
   end
@@ -92,13 +102,16 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   defp apply_action(socket, :show, %{"id" => game_name})
        when is_nil(socket.assigns.player) do
     return_to = Routes.game_path(socket, :show, game_name)
-    push_patch(socket, to: Routes.game_path(socket, :login, return_to))
+
+    push_patch(socket,
+      to: Routes.game_path(socket, :login, return_to, game_name: game_name)
+    )
   end
 
   defp apply_action(socket, :show, %{"id" => game_name}) do
+    player = socket.assigns.player
     topic = "game:" <> game_name
     Endpoint.subscribe(topic)
-    player = socket.assigns.player
     meta = %{color: player.color, score: 0, marked: 0}
     Presence.track(self(), topic, player.name, meta)
     %Summary{squares: squares} = Engine.game_summary(game_name)

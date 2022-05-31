@@ -11,22 +11,28 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
     ~H"""
     <div id="game-size-form">
       <.form let={f} for={@changeset} phx-change="validate" phx-submit="save"
-          phx-target={@myself}>
-        <div class="flex justify-evenly">
-          <label>
-            <%= radio_button f, :value, 3, checked: true %> 3 x 3
-            <%= grid_glyph(%{size: 3}) %>
-          </label>
-          <label>
-            <%= radio_button f, :value, 4 %> 4 x 4
-            <%= grid_glyph(%{size: 4}) %>
-          </label>
-          <label>
-            <%= radio_button f, :value, 5 %> 5 x 5
-            <%= grid_glyph(%{size: 5}) %>
-          </label>
+          phx-target={@myself} class="w-2/3 mx-auto">
+        <div class="flex flex-col">
+          <div class="grid grid-cols-3 justify-between gap-x-24">
+            <label>
+              <%= radio_button f, :value, 3, checked: true,
+                    phx_hook: "AutoFocus" %> 3 x 3
+              <%= grid_glyph %{size: 3} %>
+            </label>
+            <label>
+              <%= radio_button f, :value, 4 %> 4 x 4
+              <%= grid_glyph %{size: 4} %>
+            </label>
+            <label>
+              <%= radio_button f, :value, 5 %> 5 x 5
+              <%= grid_glyph %{size: 5} %>
+            </label>
+          </div>
+          <%= error_tag f, :value %>
         </div>
-        <%= submit "Start Game", phx_disable_with: "Starting..." %>
+        <div>
+          <%= submit "Start Game", phx_disable_with: "Starting..." %>
+        </div>
       </.form>
     </div>
     """
@@ -60,7 +66,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
 
   def grid_glyph(assigns) do
     ~H"""
-    <div class={"grid grid-cols-#{@size} gap-2 w-40"}>
+    <div class={"grid grid-cols-#{@size} gap-2"}>
       <%= for _n <- 1..(@size * @size) do %>
         <div class="p-1 aspect-square bg-[#4f819c]"/>
       <% end %>

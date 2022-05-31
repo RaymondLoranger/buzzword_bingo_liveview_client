@@ -90,6 +90,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb do
         GameComponent,
         GameSizeFormComponent,
         UserFormComponent,
+        MessageFormComponent,
         Endpoint,
         Presence
       }

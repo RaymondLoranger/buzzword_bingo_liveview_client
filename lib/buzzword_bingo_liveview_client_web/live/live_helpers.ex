@@ -4,17 +4,37 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   def players(assigns) do
     ~H"""
     <div>
-      <div>Who's Playing</div>
-      <ul>
-        <%= for {name, player} <- @players do %>
-          <li>
-            <span class={player_mark(player)}/>
-            <span><%= name %></span>
-            <span><%= player.score %></span>
-            <span>(<%= player.marked %> squares)</span>
-          </li>
-        <% end %>
-      </ul>
+      <div class="text-white bg-[#8064A2]">Who's Playing</div>
+      <div class="p-0">
+        <ul id="players" class="mb-0 bg-white" phx-update="replace">
+          <%= for {name, player} <- @players do %>
+            <li class="border-b-[1px] border-gray-200">
+              <span class={player_mark(player)}/>
+              <span><%= name %></span>
+              <span><%= player.score %></span>
+              <span>(<%= player.marked %> squares)</span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+    """
+  end
+
+  def messages(assigns) do
+    ~H"""
+    <div class={@class}>
+      <div class="text-white bg-[#8064A2]">What's Up?</div>
+      <div class="p-0">
+        <ul id="messages" class="mb-0 bg-white" phx-update="append">
+          <%= for %{id: id, sender: sender, body: body} <- @messages do %>
+            <li id={id} class="border-b-[1px] border-gray-200">
+              <span><%= sender %></span>
+              <span><%= body %></span>
+            </li>
+          <% end %>
+        </ul>
+      </div>
     </div>
     """
   end
