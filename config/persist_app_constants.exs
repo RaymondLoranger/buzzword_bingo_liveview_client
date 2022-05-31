@@ -13,4 +13,4 @@ config :buzzword_bingo_liveview_client,
   ]
 
 config :buzzword_bingo_liveview_client, game_sizes: 3..5
-config :buzzword_bingo_liveview_client, max_players: 3
+config :buzzword_bingo_liveview_client, max_players: 4

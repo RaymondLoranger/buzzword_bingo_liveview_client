@@ -3,36 +3,19 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameComponent do
   use Buzzword.Bingo.LiveView.ClientWeb, :aliases
 
   def render(assigns) do
-    assigns =
-      assign(assigns,
-        messages: [
-          %{
-            id: "1",
-            sender: "Moi",
-            body:
-              "Bonjour, comment allez-vous ? Voulez-vous coucher avec moi ce soir ?"
-          },
-          %{
-            id: "2",
-            sender: "Me",
-            body:
-              "Howdy, how do you do? Well, let me think about such an unexpected offer!!"
-          }
-        ]
-      )
-
     ~H"""
     <div id="game">
       <h1 class="text-center mb-2">Play Game <%= @game_name %></h1>
-      <div class="flex justify-center items-stretch space-x-6">
+      <div class="flex justify-center items-stretch gap-4">
         <.squares let={square} squares={@squares} game_size={@game_size}>
           <.square square={square} target={@myself} />
         </.squares>
-        <div class="flex flex-col justify-between space-y-2">
-          <.players players={@players}/>
-          <.messages class="flex-grow" messages={@messages}/>
+        <div class="flex flex-col justify-between gap-3">
+          <.players class="flex-auto" players={@players}/>
+          <.messages class="flex-auto" messages={@messages}/>
           <.live_component class="self-stretch" module={MessageFormComponent}
-              id="message-form"/>
+              id="message-form" topic={@topic} messages={@messages}
+              player={@player}/>
         </div>
       </div>
     </div>

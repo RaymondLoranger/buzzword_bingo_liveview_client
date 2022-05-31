@@ -3,7 +3,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def players(assigns) do
     ~H"""
-    <div>
+    <div class={@class}>
       <div class="text-white bg-[#8064A2]">Who's Playing</div>
       <div class="p-0">
         <ul id="players" class="mb-0 bg-white" phx-update="replace">
@@ -26,11 +26,12 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
     <div class={@class}>
       <div class="text-white bg-[#8064A2]">What's Up?</div>
       <div class="p-0">
-        <ul id="messages" class="mb-0 bg-white" phx-update="append">
-          <%= for %{id: id, sender: sender, body: body} <- @messages do %>
+        <ul id="messages" phx-update="append" phx-hook="ScrollToEnd"
+            class="bg-white overflow-y-auto lg:h-[400px] md:h-[300px]">
+          <%= for %{id: id, text: text, sender: sender} <- @messages do %>
             <li id={id} class="border-b-[1px] border-gray-200">
-              <span><%= sender %></span>
-              <span><%= body %></span>
+              <span><%= sender.name %></span>
+              <span><%= text %></span>
             </li>
           <% end %>
         </ul>

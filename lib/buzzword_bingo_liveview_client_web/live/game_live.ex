@@ -6,7 +6,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
 
   def mount(_params, _session, socket) do
     {:ok, assign(socket, player: nil, players: %{}),
-     temporary_assigns: [squares: []]}
+     temporary_assigns: [squares: [], messages: []]}
   end
 
   def handle_params(params, _url, socket) do
@@ -40,6 +40,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   def handle_info(%Broadcast{event: "score_fix", payload: score}, socket) do
     players = Map.merge(socket.assigns.players, score)
     {:noreply, assign(socket, players: players)}
+  end
+
+  def handle_info(%Broadcast{event: "new_message", payload: message}, socket) do
+    {:noreply, update(socket, :messages, &[message | &1])}
   end
 
   def handle_info(%Broadcast{event: "presence_diff"}, socket) do

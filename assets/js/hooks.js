@@ -6,4 +6,10 @@ Hooks.AutoFocus = {
   }
 }
 
+Hooks.ScrollToEnd = {
+  updated() {
+    this.el.scrollTop = this.el.scrollHeight
+  }
+}
+
 export default Hooks

@@ -97,7 +97,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb do
 
       alias Buzzword.Bingo.LiveView.Client.{User, GameSize}
       alias Buzzword.Bingo.{Engine, Player, Summary}
-      alias Ecto.Changeset
+      alias Ecto.{Changeset, UUID}
       alias Phoenix.{HTML, LiveComponent, LiveView}
       alias Phoenix.LiveComponent.CID
       alias Phoenix.LiveView.{JS, Rendered, Socket, UploadEntry}
