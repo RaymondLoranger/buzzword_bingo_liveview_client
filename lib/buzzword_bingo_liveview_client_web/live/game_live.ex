@@ -46,6 +46,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     {:noreply, update(socket, :messages, &[message | &1])}
   end
 
+  def handle_info(%Broadcast{event: "winner_alert", payload: winner}, socket) do
+    {:noreply, assign(socket, winner: winner)}
+  end
+
   def handle_info(%Broadcast{event: "presence_diff"}, socket) do
     %Summary{scores: scores} = Engine.game_summary(socket.assigns.game_name)
     players = presence_players(socket.assigns.topic)
@@ -63,12 +67,22 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   def handle_info(msg, socket) do
-    Logger.error("""
+    Logger.warn("""
     ::: Unknown message :::
     #{inspect(msg)}
     """)
 
     {:noreply, socket}
+  end
+
+  def terminate(reason, socket) do
+    player = socket.assigns[:player]
+    game_name = socket.assigns[:game_name]
+
+    if player do
+      Logger.warn("Player '#{player.name}' quitting game '#{game_name}'.")
+      Logger.warn("Reason: #{inspect(reason)}")
+    end
   end
 
   ## Private functions
@@ -113,6 +127,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   defp apply_action(socket, :show, %{"id" => game_name}) do
+    url = Routes.game_url(socket, :show, game_name) |> Clipboard.copy()
     player = socket.assigns.player
     topic = "game:" <> game_name
     Endpoint.subscribe(topic)
@@ -127,7 +142,9 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
       game_name: game_name,
       topic: topic,
       game_size: game_size,
-      squares: squares
+      squares: squares,
+      url: url,
+      winner: nil
     )
   end
 end

@@ -31,7 +31,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
           <%= error_tag f, :value %>
         </div>
         <div>
-          <%= submit "Start Game", phx_disable_with: "Starting..." %>
+          <%= submit "Start Game" %>
         </div>
       </.form>
     </div>

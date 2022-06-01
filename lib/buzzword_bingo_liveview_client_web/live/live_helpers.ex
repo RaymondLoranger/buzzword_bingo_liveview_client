@@ -3,12 +3,14 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def players(assigns) do
     ~H"""
-    <div class={@class}>
-      <div class="text-white bg-[#8064A2]">Who's Playing</div>
+    <div id="players-panel">
+      <div class="text-white bg-[#8064A2] p-2 rounded-t-md">
+        Who's Playing
+      </div>
       <div class="p-0">
-        <ul id="players" class="mb-0 bg-white" phx-update="replace">
+        <ul id="players" class="players" phx-update="replace">
           <%= for {name, player} <- @players do %>
-            <li class="border-b-[1px] border-gray-200">
+            <li class="border-b-[1px] border-gray-200 p-1">
               <span class={player_mark(player)}/>
               <span><%= name %></span>
               <span><%= player.score %></span>
@@ -23,13 +25,15 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def messages(assigns) do
     ~H"""
-    <div class={@class}>
-      <div class="text-white bg-[#8064A2]">What's Up?</div>
-      <div class="p-0">
+    <div id="messages-panel">
+      <div class="text-white bg-[#8064A2] p-2 rounded-t-md">
+        What's Up?
+      </div>
+      <div>
         <ul id="messages" phx-update="append" phx-hook="ScrollToEnd"
-            class="bg-white overflow-y-auto lg:h-[400px] md:h-[300px]">
+            class={messages_class(@presences)}>
           <%= for %{id: id, text: text, sender: sender} <- @messages do %>
-            <li id={id} class="border-b-[1px] border-gray-200">
+            <li id={id} class="border-b-[1px] border-gray-200 p-1">
               <span><%= sender.name %></span>
               <span><%= text %></span>
             </li>
@@ -63,7 +67,48 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
     """
   end
 
+  def game_over?(assigns) do
+    ~H"""
+    <%= if @winner do %>
+      <div id="winner" class="winner">
+        <%= @winner.name %> won!
+      </div>
+    <% end %>
+    """
+  end
+
+  def game_url(assigns) do
+    ~H"""
+    <div class="input-duo mb-4 mx-auto">
+      <input value={@url} readonly class="w-5/12 pl-2">
+      <button title="Copy game URL" phx-click="url_click" phx-target={@target}>
+        <i class="fa fa-clipboard"></i>
+      </button>
+    </div>
+    """
+  end
+
   ## Private functions
+
+  defp messages_class(0) do
+    "messages lg:h-[393px] md:h-[378px]"
+  end
+
+  defp messages_class(1) do
+    "messages lg:h-[393px] md:h-[378px]"
+  end
+
+  defp messages_class(2) do
+    "messages lg:h-[360px] md:h-[280px]"
+  end
+
+  defp messages_class(3) do
+    "messages lg:h-[328px] md:h-[260px]"
+  end
+
+  defp messages_class(4) do
+    "messages lg:h-[294px] md:h-[265px]"
+  end
 
   defp squares_class(game_size) do
     "squares grid-cols-#{game_size}"

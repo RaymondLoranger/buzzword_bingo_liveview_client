@@ -36,7 +36,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
           <%= error_tag f, :color %>
         </div>
         <div>
-          <%= submit "Play Bingo", phx_disable_with: "Logg  ing..." %>
+          <%= submit "Play Bingo" %>
         </div>
       </.form>
     </div>

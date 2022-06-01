@@ -6,6 +6,7 @@
     <.live_component module={GameSizeFormComponent} id="game-size-form"/>
   <% :show -> %>
     <.live_component module={GameComponent} id="game" game_name={@game_name}
-        player={@player} topic={@topic} game_size={@game_size}
-        squares={@squares} players={@players} messages={@messages}/>
+        player={@player} topic={@topic} game_size={@game_size} url={@url}
+        squares={@squares} players={@players} messages={@messages}
+        winner={@winner}/>
 <% end %>

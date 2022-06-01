@@ -2,24 +2,20 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.MessageFormComponent do
   use Buzzword.Bingo.LiveView.ClientWeb, :live_component
   use Buzzword.Bingo.LiveView.ClientWeb, :aliases
 
-  require Logger
-
   def mount(socket) do
-    socket = assign(socket, text: "")
-    {:ok, socket}
+    {:ok, assign(socket, text: "")}
   end
 
   def render(assigns) do
     ~H"""
-    <div id="message-form" class={@class}>
+    <div id="message-form">
       <.form let={f} for={:message} phx-submit="send" phx-target={@myself}
           phx-change="form_change">
-        <span>
+        <span class="input-duo">
           <%= text_input f, :text, value: @text,
                 placeholder: "Enter your message..." %>
-        </span>
-        <span>
-          <%= submit "Send", phx_disable_with: "Sending..." %>
+          <%= submit icon(%{class: "fa fa-comment fa-inverse"}),
+                disabled: @text == "", title: "Send message" %>
         </span>
       </.form>
     </div>
@@ -35,5 +31,13 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.MessageFormComponent do
     message = %{id: UUID.generate(), text: message["text"], sender: player}
     Endpoint.broadcast(socket.assigns.topic, "new_message", message)
     {:noreply, assign(socket, text: "")}
+  end
+
+  ## Private functions
+
+  defp icon(assigns) do
+    ~H"""
+    <i class={@class}></i>
+    """
   end
 end

@@ -94,13 +94,19 @@ ul.examples li a {
   color: #fff;
 }
 
+.messages {
+  @apply border-x-2 border-b-2 border-indigo-300 rounded-b-md bg-white
+  overflow-y-auto;
+}
+
 .square {
   @apply flex flex-col border-2 border-indigo-300 rounded-md p-1
   aspect-square text-indigo-700 text-xs leading-3;
 }
 
 .squares {
-  @apply grid gap-2 w-7/12 max-w-xl auto-rows-max auto-cols-max;
+  @apply grid gap-2 mx-auto w-full md:w-7/12 md:mx-0 auto-rows-max
+  auto-cols-max;
 }
 
 .color-checked {
@@ -126,172 +132,33 @@ form .invalid-feedback {
   @apply text-center text-cool-gray-900 font-extrabold text-4xl mb-8;
 }
 
+.input-duo {
+  @apply flex justify-center items-stretch;
+}
+
+.input-duo input[type="text"] {
+  @apply h-10 border border-cool-gray-400 rounded-l-md rounded-r-none
+  bg-white px-5 text-base;
+}
+
+.input-duo button {
+  @apply h-10 px-4 py-2 bg-orange-400 border border-cool-gray-400
+  border-l-0 rounded-r-md transition ease-in-out duration-150 outline-none
+  hover:disabled:bg-cool-gray-200 disabled:bg-slate-300
+  hover:bg-orange-300;
+}
+
+.winner {
+  @apply absolute opacity-80 text-5xl left-1/3 top-1/2 animate-ping;
+}
+
+.players {
+  @apply border-x-2 border-b-2 border-indigo-300 rounded-b-md mb-0 bg-white;
+}
+
 footer a {
   @apply text-blue-800 hover:brightness-150;
 }
-
-/*
- * ╔═══════════════╗
- * ║ ••• Posts ••• ║
- * ╚═══════════════╝
- */
-
-/*
-main.container {
-  @apply mx-auto w-11/12;
-}
-
-main.container h1 {
-  @apply mb-5;
-}
-
-main #posts {
-  @apply mt-2;
-}
-
-main #posts .post {
-  @apply border border-gray-400 rounded-md py-1 mb-3;
-}
-
-main #posts .post:hover {
-  @apply outline-none border-indigo-300 ring ring-indigo-300;
-}
-
-main #posts .post .line {
-  @apply flex flex-row justify-around;
-}
-
-main #posts .post .column {
-  @apply pt-4 px-4 max-w-4xl;
-}
-
-main #posts .post-avatar img {
-  @apply mt-1 w-24 h-24 rounded-lg object-center object-cover;
-}
-
-main #posts .post-body {
-  @apply w-11/12 px-4;
-}
-
-main .photos {
-  @apply mt-2 flex flex-wrap gap-2;
-}
-*/
-
-/* main .photos .photo {
-  @apply text-center p-4 m-4 border-2 border-cool-gray-300 rounded-xl;
-} */
-
-/*
-main .photos .photo img {
-  @apply h-36 w-36 md:h-48 md:w-48 mx-auto object-center object-fill;
-}
-
-main #posts a,#show a {
-  @apply mx-1.5 text-indigo-600 hover:brightness-150;
-}
-
-main a[href*="new"] {
-  @apply ml-px inline-flex items-center px-4 py-2 border border-indigo-700
-  bg-indigo-600 text-base leading-5 font-medium text-white
-  no-underline rounded-md hover:bg-indigo-500;
-}
-
-#modal-content {
-  @apply mt-96 min-w-max max-w-2xl bg-white/80;
-  margin-top: 600px;
-}
-
-#post-form {
-  @apply p-3 mb-3;
-}
-
-#post-form label {
-  @apply block text-lg font-medium text-cool-gray-600 mt-2 mb-1;
-}
-
-#post-form
-input[type="text"],
-input[type="number"],
-textarea {
-  @apply w-full appearance-none border border-cool-gray-400
-  rounded-md transition duration-150 ease-in-out text-base opacity-60;
-}
-
-#post-form
-input[type="text"]:focus,
-input[type="number"]:focus,
-textarea:focus {
-  @apply outline-none border-indigo-300 ring ring-indigo-300;
-}
-
-#post-form button {
-  @apply mt-4 py-1 px-8 border border-transparent font-medium rounded-md
-  text-white bg-indigo-500 outline-none text-lg hover:bg-indigo-700;
-}
-
-#post-form .invalid-feedback {
-  @apply m-0.5 text-sm font-medium italic text-red-600;
-}
-
-#post-form .invalid-feedback[phx-feedback-for*="body"] {
-  @apply mt-0;
-}
-
-#post-form .drop {
-  @apply flex items-baseline justify-center space-x-1 my-0 p-0 border-2
-  border-dashed border-gray-300 rounded-md text-center text-gray-600;
-}
-
-#post-form .drop label {
-  @apply cursor-pointer font-medium text-indigo-600 hover:text-fuchsia-600
-  focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2
-  focus-within:ring-indigo-500 focus-within:mr-1.5;
-}
-
-#post-form .drop p {
-  @apply text-sm text-gray-500;
-}
-
-#post-form .drop img {
-  @apply mx-auto h-8 w-8;
-}
-
-#post-form .entry {
-  @apply my-6 flex items-center justify-start space-x-6;
-}
-
-#post-form .entry img {
-  @apply w-32;
-}
-
-#post-form .entry .progress {
-  @apply w-full;
-}
-
-#post-form .entry .progress .value {
-  @apply text-left mb-2 text-xs font-semibold inline-block text-pink-600;
-}
-
-#post-form .entry .progress .bar {
-  @apply flex h-2 overflow-hidden text-base bg-pink-200 rounded-lg mb-4;
-}
-
-#post-form .entry .progress .bar > span {
-  @apply shadow-md bg-pink-500;
-  transition: width 1s ease;
-}
-
-#post-form .entry a {
-  @apply text-3xl font-bold text-cool-gray-700 hover:text-red-700;
-}
-
-#post-form .error {
-  color: #a94442;
-  display: block;
-  margin: 0.5rem 0;
-}
-*/
 
 /*
  * ┌────────────────────────────────────────────────┐
