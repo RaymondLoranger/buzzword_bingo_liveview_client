@@ -12,7 +12,7 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
 
   embedded_schema do
     field :name, :string
-    field :color, :string, default: hd(@colors)
+    field :color, :string
   end
 
   def changeset(attrs \\ %{}, players \\ %{}) do
@@ -24,10 +24,14 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
     end)
     |> validate_change(:name, fn :name, _name ->
       if map_size(players) >= @max_players,
-        do: [name: "Max number of players (#{@max_players}) already reached"],
+        do: [name: "Players limit (#{@max_players}) already reached"],
         else: []
     end)
     |> validate_inclusion(:color, @colors, message: "invalid color")
+    |> validate_change(:color, fn :color, color ->
+      colors = players |> Map.values() |> Enum.map(& &1.color)
+      if color in colors, do: [color: "Color #{color} already taken"], else: []
+    end)
   end
 
   def apply_insert(attrs, players) do

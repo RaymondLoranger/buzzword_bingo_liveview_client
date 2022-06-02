@@ -80,7 +80,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   def game_url(assigns) do
     ~H"""
     <div class="input-duo mb-4 mx-auto">
-      <input value={@url} readonly class="w-5/12 pl-2">
+      <input id="game-url" value={@url} readonly class="w-5/12 pl-2">
       <button title="Copy game URL" phx-click="url_click" phx-target={@target}>
         <i class="fa fa-clipboard"></i>
       </button>

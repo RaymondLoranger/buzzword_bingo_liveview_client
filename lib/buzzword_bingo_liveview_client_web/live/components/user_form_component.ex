@@ -13,11 +13,13 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
     ~H"""
     <div id="user-form">
       <h1>Welcome!</h1>
-      <h4>First up, we need your name and favorite color:</h4>
+      <h4 class="text-center text-xl">
+        First up, we need your name and favorite color:
+      </h4>
       <.form let={f} for={@changeset} phx-change="validate" phx-submit="save"
           class="flex items-top">
         <div class="flex flex-col">
-          <%= text_input f, :name, placeholder: "Name", phx_debounce: "999",
+          <%= text_input f, :name, placeholder: "Name", phx_debounce: "500",
                 phx_hook: "AutoFocus", required: true %>
           <%= error_tag f, :name %>
         </div>
@@ -28,7 +30,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
                 <%= radio_button f, :color, color, class: "sr-only peer",
                       phx_target: @myself, phx_click: "color_clicked",
                       id: color, checked: color == @color %>
-                <label class={label_class(color)} for={color}/>
+                <label class={label_class(color)} for={color} title={color}/>
                 <div class="color-checked">✓</div>
               </li>
             <% end %>

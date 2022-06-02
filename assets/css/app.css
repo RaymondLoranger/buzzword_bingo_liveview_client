@@ -149,7 +149,7 @@ form .invalid-feedback {
 }
 
 .winner {
-  @apply absolute opacity-80 text-5xl left-1/3 top-1/2 animate-ping;
+  @apply absolute opacity-80 text-5xl inset-1/4 animate-ping;
 }
 
 .players {

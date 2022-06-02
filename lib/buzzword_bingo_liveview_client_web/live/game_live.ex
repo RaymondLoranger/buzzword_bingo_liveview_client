@@ -62,6 +62,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     {:noreply, assign(socket, players: players)}
   end
 
+  def handle_info({:error, msg}, socket) when is_binary(msg) do
+    {:noreply, put_flash(socket, :error, msg)}
+  end
+
   def handle_info(msg, socket) when is_binary(msg) do
     {:noreply, put_flash(socket, :info, msg)}
   end
@@ -78,10 +82,19 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   def terminate(reason, socket) do
     player = socket.assigns[:player]
     game_name = socket.assigns[:game_name]
+    players = socket.assigns[:players]
 
     if player do
       Logger.warn("Player '#{player.name}' quitting game '#{game_name}'.")
-      Logger.warn("Reason: #{inspect(reason)}")
+    else
+      Logger.warn("Unknown player quitting game '#{game_name}'.")
+    end
+
+    Logger.warn("Reason: #{inspect(reason)}")
+
+    if players && map_size(players) == 1 do
+      Logger.warn("Ending game: #{game_name}")
+      Engine.end_game(game_name)
     end
   end
 
@@ -113,7 +126,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
   end
 
   defp apply_action(socket, :new, _params) do
-    assign(socket, :page_title, "Game size")
+    assign(socket, page_title: "Game size")
   end
 
   # /games/:id
@@ -130,12 +143,19 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     url = Routes.game_url(socket, :show, game_name) |> Clipboard.copy()
     player = socket.assigns.player
     topic = "game:" <> game_name
-    Endpoint.subscribe(topic)
-    meta = %{color: player.color, score: 0, marked: 0}
-    Presence.track(self(), topic, player.name, meta)
-    %Summary{squares: squares} = Engine.game_summary(game_name)
-    game_size = length(squares)
-    squares = List.flatten(squares)
+
+    {game_size, squares} =
+      case Engine.game_summary(game_name) do
+        %Summary{squares: squares} ->
+          Endpoint.subscribe(topic)
+          meta = %{color: player.color, score: 0, marked: 0}
+          Presence.track(self(), topic, player.name, meta)
+          {length(squares), List.flatten(squares)}
+
+        {:error, _} ->
+          send(self(), {:error, "Game #{game_name} not found!"})
+          {0, []}
+      end
 
     assign(socket,
       page_title: "Game #{game_name}",

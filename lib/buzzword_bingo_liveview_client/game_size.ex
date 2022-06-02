@@ -12,7 +12,7 @@ defmodule Buzzword.Bingo.LiveView.Client.GameSize do
   @primary_key false
 
   embedded_schema do
-    field :value, :integer, default: 3
+    field :value, :integer
   end
 
   def changeset(attrs \\ %{}) do

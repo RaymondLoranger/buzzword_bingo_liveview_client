@@ -25,7 +25,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameComponent do
 
   def handle_event("url_click", _payload, socket) do
     Clipboard.copy(socket.assigns.url)
-    {:noreply, socket}
+    {:noreply, push_event(socket, "select-text", %{id: "game-url"})}
   end
 
   def handle_event("square_click", %{"id" => phrase}, socket) do
