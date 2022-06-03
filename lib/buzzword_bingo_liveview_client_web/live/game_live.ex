@@ -19,7 +19,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     {:noreply, assign(socket, changeset: changeset)}
   end
 
-  def handle_event("save", %{"user" => user}, socket) do
+  def handle_event("play", %{"user" => user}, socket) do
     players = presence_players(socket.assigns.topic)
 
     case User.apply_insert(user, players) do
@@ -62,12 +62,12 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
     {:noreply, assign(socket, players: players)}
   end
 
-  def handle_info({:error, msg}, socket) when is_binary(msg) do
-    {:noreply, put_flash(socket, :error, msg)}
+  def handle_info({:error, msg}, socket) when is_binary(msg) or is_list(msg) do
+    {:noreply, put_flash(socket, :error, raw(msg))}
   end
 
-  def handle_info(msg, socket) when is_binary(msg) do
-    {:noreply, put_flash(socket, :info, msg)}
+  def handle_info(msg, socket) when is_binary(msg) or is_list(msg) do
+    {:noreply, put_flash(socket, :info, raw(msg))}
   end
 
   def handle_info(msg, socket) do
@@ -153,7 +153,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
           {length(squares), List.flatten(squares)}
 
         {:error, _} ->
-          send(self(), {:error, "Game #{game_name} not found!"})
+          send(self(), {:error, error_msg(game_name)})
           {0, []}
       end
 
@@ -166,5 +166,17 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameLive do
       url: url,
       winner: nil
     )
+  end
+
+  # Private functions
+
+  defp error_msg(game_name) do
+    """
+    Game
+    <span class="font-bold">
+      #{game_name}
+    </span>
+    not found!
+    """
   end
 end

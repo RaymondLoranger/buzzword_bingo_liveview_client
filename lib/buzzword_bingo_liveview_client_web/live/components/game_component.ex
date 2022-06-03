@@ -14,9 +14,8 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameComponent do
         <div class="flex flex-col justify-between gap-3">
           <.players players={@players}/>
           <.messages messages={@messages} presences={map_size(@players)}/>
-          <.live_component module={MessageFormComponent}
-              id="message-form" topic={@topic} messages={@messages}
-              player={@player}/>
+          <.live_component module={MessageFormComponent} id="message-form"
+              topic={@topic} messages={@messages} player={@player}/>
         </div>
       </div>
     </div>

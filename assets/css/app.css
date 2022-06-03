@@ -94,6 +94,14 @@ ul.examples li a {
   color: #fff;
 }
 
+.submit-button {
+  @apply border-2 px-4 py-2 border-gray-500 rounded-md mt-8;
+}
+
+.game-url {
+  @apply w-5/12 pl-2 outline-1 outline-indigo-300 ring-1 ring-indigo-300;
+}
+
 .messages {
   @apply border-x-2 border-b-2 border-indigo-300 rounded-b-md bg-white
   overflow-y-auto;
@@ -121,11 +129,11 @@ ul.examples li a {
 }
 
 .player-mark {
-  @apply h-2 w-2 px-2 mx-2 rounded-sm;
+  @apply h-1.5 aspect-square px-2.5 mx-1.5 rounded-sm;
 }
 
 form .invalid-feedback {
-  @apply m-0.5 text-sm font-medium italic capitalize text-red-600;
+  @apply m-0.5 text-sm font-medium italic text-red-600;
 }
 
 #user-form h1 {

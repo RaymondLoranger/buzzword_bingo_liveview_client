@@ -13,7 +13,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.MessageFormComponent do
         <span class="input-duo">
           <input type="text" name="text" value={@text}
               placeholder="Enter your message...">
-          <button type="submit" disabled={@text == ""}>
+          <button title="Send message" type="submit" disabled={@text == ""}>
             <Solid.chat_alt_2 class="h-full aspect-square invert"/>
           </button>
         </span>

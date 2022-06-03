@@ -16,7 +16,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
       <h4 class="text-center text-xl mb-6">
         First up, we need your name and favorite color:
       </h4>
-      <.form let={f} for={@changeset} phx-change="validate" phx-submit="save">
+      <.form let={f} for={@changeset} phx-change="validate" phx-submit="play">
         <div class="flex justify-center items-top">
           <div class="flex flex-col">
             <%= text_input f, :name, placeholder: "Name", phx_debounce: "500",
@@ -39,8 +39,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
           </div>
         </div>
         <div class="text-center mt-6">
-          <%= submit "Play Bingo",
-                class: "border-2 px-4 py-2 border-gray-500 rounded-md" %>
+          <%= submit "Play Bingo", class: "submit-button" %>
         </div>
       </.form>
     </div>

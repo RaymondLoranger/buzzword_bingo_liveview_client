@@ -20,21 +20,43 @@ defmodule Buzzword.Bingo.LiveView.Client.User do
     |> cast(attrs, [:name, :color])
     |> validate_length(:name, min: 2, max: 9, message: "must be 2 to 9 chars")
     |> validate_change(:name, fn :name, name ->
-      if players[name], do: [name: "Name '#{name}' already taken"], else: []
+      if players[name], do: [name: name_taken_msg(name)], else: []
     end)
     |> validate_change(:name, fn :name, _name ->
       if map_size(players) >= @max_players,
-        do: [name: "Players limit (#{@max_players}) already reached"],
+        do: [name: "players limit (#{@max_players}) already reached"],
         else: []
     end)
     |> validate_inclusion(:color, @colors, message: "invalid color")
     |> validate_change(:color, fn :color, color ->
       colors = players |> Map.values() |> Enum.map(& &1.color)
-      if color in colors, do: [color: "Color #{color} already taken"], else: []
+      if color in colors, do: [color: color_taken_msg(color)], else: []
     end)
   end
 
   def apply_insert(attrs, players) do
     changeset(attrs, players) |> apply_action(:insert)
+  end
+
+  ## Private functions
+
+  defp name_taken_msg(name) do
+    """
+    name
+    <span class="font-bold">
+      #{name}
+    </span>
+    already taken
+    """
+  end
+
+  defp color_taken_msg(color) do
+    """
+    color
+    <span class="font-bold bg-[#{color}]">
+      #{color}
+    </span>
+    already taken
+    """
   end
 end

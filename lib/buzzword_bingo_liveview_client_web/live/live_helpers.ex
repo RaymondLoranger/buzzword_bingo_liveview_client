@@ -35,7 +35,9 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
             class={messages_class(@presences)}>
           <%= for %{id: id, text: text, sender: sender} <- @messages do %>
             <li id={id} class="border-b-[1px] border-gray-200 p-1">
-              <span><%= sender.name %></span>
+              <span class={message_class(sender)}>
+                <%= sender.name %>
+              </span>
               <span><%= text %></span>
             </li>
           <% end %>
@@ -81,7 +83,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   def game_url(assigns) do
     ~H"""
     <div class="input-duo mt-2 mb-8 mx-auto">
-      <input id="game-url" value={@url} readonly class="w-5/12 pl-2 outline-0">
+      <input id="game-url" value={@url} readonly class="game-url">
       <button title="Copy game URL" phx-click="url_click" phx-target={@target}>
         <Solid.clipboard_copy class="h-full aspect-square invert"/>
       </button>
@@ -91,31 +93,35 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   ## Private functions
 
-  defp messages_class(0) do
-    "messages lg:h-[393px] md:h-[378px]"
+  defp messages_class(_presences = 0) do
+    "messages lg:h-[393px] md:h-[263x]"
   end
 
   defp messages_class(1) do
-    "messages lg:h-[393px] md:h-[378px]"
+    "messages lg:h-[393px] md:h-[263px]"
   end
 
   defp messages_class(2) do
-    "messages lg:h-[360px] md:h-[280px]"
+    "messages lg:h-[360px] md:h-[231px]"
   end
 
   defp messages_class(3) do
-    "messages lg:h-[328px] md:h-[260px]"
+    "messages lg:h-[328px] md:h-[198px]"
   end
 
   defp messages_class(4) do
-    "messages lg:h-[294px] md:h-[265px]"
+    "messages lg:h-[294px] md:h-[165px]"
+  end
+
+  defp message_class(sender) do
+    "bg-[#{sender.color}] pl-1.5 pr-0.5 mr-1 rounded-sm"
   end
 
   defp squares_class(game_size) do
     "squares grid-cols-#{game_size}"
   end
 
-  defp square_class(square) when is_nil(square.marked_by), do: "square"
+  defp square_class(square) when is_nil(square.marked_by), do: "square bg-white"
   defp square_class(square), do: "square bg-[#{square.marked_by.color}]"
 
   defp player_mark(player), do: "player-mark bg-[#{player.color}]"

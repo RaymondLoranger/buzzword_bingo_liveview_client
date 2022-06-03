@@ -10,10 +10,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
   def render(assigns) do
     ~H"""
     <div id="game-size-form">
-      <.form let={f} for={@changeset} phx-change="validate" phx-submit="save"
+      <.form let={f} for={@changeset} phx-change="validate" phx-submit="start"
           phx-target={@myself} class="w-2/3 mx-auto">
         <div class="flex flex-col">
-          <div class="grid grid-cols-3 justify-between gap-x-24">
+          <div class="grid grid-cols-3 gap-x-24">
             <label>
               <%= radio_button f, :value, 5, checked: true,
                     phx_hook: "AutoFocus" %> 5 x 5
@@ -31,8 +31,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
           <%= error_tag f, :value %>
         </div>
         <div class="text-center mt-6">
-          <%= submit "Start Game",
-                class: "border-2 px-4 py-2 border-gray-500 rounded-md" %>
+          <%= submit "Start Game", class: "submit-button" %>
         </div>
       </.form>
     </div>
@@ -44,7 +43,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
     {:noreply, assign(socket, :changeset, changeset)}
   end
 
-  def handle_event("save", %{"game_size" => game_size}, socket) do
+  def handle_event("start", %{"game_size" => game_size}, socket) do
     case GameSize.apply_insert(game_size) do
       {:ok, game_size} ->
         game_name = Engine.haiku_name()
