@@ -65,7 +65,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
 
   ## Private functions
 
-  def grid_glyph(assigns) do
+  defp grid_glyph(assigns) do
     ~H"""
     <div class={"grid grid-cols-#{@size} gap-2"}>
       <%= for _n <- 1..(@size * @size) do %>
