@@ -95,6 +95,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb do
         Presence
       }
 
+      alias Heroicons.{Outline, Solid}
       alias Buzzword.Bingo.LiveView.Client.{User, GameSize}
       alias Buzzword.Bingo.{Engine, Player, Summary}
       alias Ecto.{Changeset, UUID}

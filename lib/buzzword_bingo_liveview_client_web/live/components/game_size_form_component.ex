@@ -15,23 +15,24 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
         <div class="flex flex-col">
           <div class="grid grid-cols-3 justify-between gap-x-24">
             <label>
-              <%= radio_button f, :value, 3, checked: true,
-                    phx_hook: "AutoFocus" %> 3 x 3
-              <%= grid_glyph %{size: 3} %>
+              <%= radio_button f, :value, 5, checked: true,
+                    phx_hook: "AutoFocus" %> 5 x 5
+              <%= grid_glyph %{size: 5} %>
             </label>
             <label>
               <%= radio_button f, :value, 4 %> 4 x 4
               <%= grid_glyph %{size: 4} %>
             </label>
             <label>
-              <%= radio_button f, :value, 5 %> 5 x 5
-              <%= grid_glyph %{size: 5} %>
+              <%= radio_button f, :value, 3 %> 3 x 3
+              <%= grid_glyph %{size: 3} %>
             </label>
           </div>
           <%= error_tag f, :value %>
         </div>
-        <div>
-          <%= submit "Start Game" %>
+        <div class="text-center mt-6">
+          <%= submit "Start Game",
+                class: "border-2 px-4 py-2 border-gray-500 rounded-md" %>
         </div>
       </.form>
     </div>

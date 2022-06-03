@@ -1,5 +1,6 @@
 defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   use Phoenix.Component
+  use Buzzword.Bingo.LiveView.ClientWeb, :aliases
 
   def players(assigns) do
     ~H"""
@@ -79,10 +80,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   def game_url(assigns) do
     ~H"""
-    <div class="input-duo mb-4 mx-auto">
-      <input id="game-url" value={@url} readonly class="w-5/12 pl-2">
+    <div class="input-duo mt-2 mb-8 mx-auto">
+      <input id="game-url" value={@url} readonly class="w-5/12 pl-2 outline-0">
       <button title="Copy game URL" phx-click="url_click" phx-target={@target}>
-        <i class="fa fa-clipboard"></i>
+        <Solid.clipboard_copy class="h-full aspect-square invert"/>
       </button>
     </div>
     """

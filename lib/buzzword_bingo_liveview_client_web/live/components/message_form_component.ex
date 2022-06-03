@@ -9,35 +9,27 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.MessageFormComponent do
   def render(assigns) do
     ~H"""
     <div id="message-form">
-      <.form let={f} for={:message} phx-submit="send" phx-target={@myself}
-          phx-change="form_change">
+      <form phx-submit="send" phx-target={@myself} phx-change="text_change">
         <span class="input-duo">
-          <%= text_input f, :text, value: @text,
-                placeholder: "Enter your message..." %>
-          <%= submit icon(%{class: "fa fa-comment fa-inverse"}),
-                disabled: @text == "", title: "Send message" %>
+          <input type="text" name="text" value={@text}
+              placeholder="Enter your message...">
+          <button type="submit" disabled={@text == ""}>
+            <Solid.chat_alt_2 class="h-full aspect-square invert"/>
+          </button>
         </span>
-      </.form>
+      </form>
     </div>
     """
   end
 
-  def handle_event("form_change", %{"message" => message}, socket) do
-    {:noreply, assign(socket, text: message["text"])}
+  def handle_event("text_change", %{"text" => text}, socket) do
+    {:noreply, assign(socket, text: text)}
   end
 
-  def handle_event("send", %{"message" => message}, socket) do
+  def handle_event("send", %{"text" => text}, socket) do
     player = socket.assigns.player
-    message = %{id: UUID.generate(), text: message["text"], sender: player}
+    message = %{id: UUID.generate(), text: text, sender: player}
     Endpoint.broadcast(socket.assigns.topic, "new_message", message)
     {:noreply, assign(socket, text: "")}
-  end
-
-  ## Private functions
-
-  defp icon(assigns) do
-    ~H"""
-    <i class={@class}></i>
-    """
   end
 end
