@@ -2,6 +2,24 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   use Phoenix.Component
   use Buzzword.Bingo.LiveView.ClientWeb, :aliases
 
+  def grid_size(assigns) do
+    ~H"""
+    <span class="leading-4 float-right mr-12">
+      <%= render_slot(@inner_block) %>
+    </span>
+    """
+  end
+
+  def grid_glyph(assigns) do
+    ~H"""
+    <div class={"grid grid-cols-#{@size} gap-2"}>
+      <%= for _n <- 1..(@size * @size) do %>
+        <div class="p-1 aspect-square bg-[#4f819c]"/>
+      <% end %>
+    </div>
+    """
+  end
+
   def players(assigns) do
     ~H"""
     <div id="players-panel">

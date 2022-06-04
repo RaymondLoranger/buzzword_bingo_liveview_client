@@ -10,22 +10,28 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
   def render(assigns) do
     ~H"""
     <div id="game-size-form">
+      <div class="flex justify-center mb-8">
+        <h4 class="text-xl">Select the game size:</h4>
+      </div>
       <.form let={f} for={@changeset} phx-change="validate" phx-submit="start"
           phx-target={@myself} class="w-2/3 mx-auto">
         <div class="flex flex-col">
           <div class="grid grid-cols-3 gap-x-24">
             <label>
               <%= radio_button f, :value, 5, checked: true,
-                    phx_hook: "AutoFocus" %> 5 x 5
-              <%= grid_glyph %{size: 5} %>
+                    phx_hook: "AutoFocus", class: "ml-12 mb-4" %>
+              <.grid_size>5 x 5</.grid_size>
+              <.grid_glyph size={5}/>
             </label>
             <label>
-              <%= radio_button f, :value, 4 %> 4 x 4
-              <%= grid_glyph %{size: 4} %>
+              <%= radio_button f, :value, 4, class: "ml-12 mb-4" %>
+              <.grid_size>4 x 4</.grid_size>
+              <.grid_glyph size={4}/>
             </label>
             <label>
-              <%= radio_button f, :value, 3 %> 3 x 3
-              <%= grid_glyph %{size: 3} %>
+              <%= radio_button f, :value, 3, class: "ml-12 mb-4" %>
+              <.grid_size>3 x 3</.grid_size>
+              <.grid_glyph size={3}/>
             </label>
           </div>
           <%= error_tag f, :value %>
@@ -60,17 +66,5 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameSizeFormComponent do
       {:error, changeset} ->
         {:noreply, assign(socket, changeset: changeset)}
     end
-  end
-
-  ## Private functions
-
-  defp grid_glyph(assigns) do
-    ~H"""
-    <div class={"grid grid-cols-#{@size} gap-2"}>
-      <%= for _n <- 1..(@size * @size) do %>
-        <div class="p-1 aspect-square bg-[#4f819c]"/>
-      <% end %>
-    </div>
-    """
   end
 end

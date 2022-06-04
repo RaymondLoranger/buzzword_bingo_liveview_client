@@ -6,7 +6,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.GameComponent do
     ~H"""
     <div id="game">
       <.game_url url={@url} target={@myself}/>
-      <div class="flex flex-col sm:flex-row justify-center items-stretch gap-2">
+      <div class="flex flex-col sm:flex-row justify-center items-stretch gap-4">
         <.squares let={square} squares={@squares} game_size={@game_size}>
           <.square square={square} target={@myself}/>
         </.squares>
