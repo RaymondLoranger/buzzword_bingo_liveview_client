@@ -126,7 +126,7 @@ footer a {
 }
 
 #game .squares {
-  @apply grid gap-2 mx-auto w-full md:w-7/12 md:mx-0 auto-rows-max
+  @apply relative grid gap-2 mx-auto w-full md:w-7/12 md:mx-0 auto-rows-max
   auto-cols-max;
 }
 
