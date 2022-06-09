@@ -27,6 +27,24 @@ module.exports = {
     'bg-[#fce8bd]',
     'bg-[#fcd8ac]',
     'bg-[#fefbe7]', // invalid player color
+    'border-[#a4deff]',
+    'border-[#f9cedf]',
+    'border-[#d3c5f1]',
+    'border-[#acc9f5]',
+    'border-[#aeeace]',
+    'border-[#96d7b9]',
+    'border-[#fce8bd]',
+    'border-[#fcd8ac]',
+    'border-[#fefbe7]', // invalid player color
+    'ring-[#a4deff]',
+    'ring-[#f9cedf]',
+    'ring-[#d3c5f1]',
+    'ring-[#acc9f5]',
+    'ring-[#aeeace]',
+    'ring-[#96d7b9]',
+    'ring-[#fce8bd]',
+    'ring-[#fcd8ac]',
+    'ring-[#fefbe7]', // invalid player color
     {
       pattern: /(border|text)-(green|blue|indigo|purple|pink)-(6|7|8)00/
     }

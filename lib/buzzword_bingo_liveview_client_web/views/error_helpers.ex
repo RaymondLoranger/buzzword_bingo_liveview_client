@@ -10,10 +10,10 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.ErrorHelpers do
   @doc """
   Generates tag for inlined form input errors.
   """
-  def error_tag(form, field) do
+  def error_tag(form, field, opts \\ [class: "invalid-feedback"]) do
     Enum.map(Keyword.get_values(form.errors, field), fn error ->
       content_tag(:span, translate_error(error) |> raw(),
-        class: "invalid-feedback",
+        class: opts[:class],
         phx_feedback_for: input_name(form, field)
       )
     end)

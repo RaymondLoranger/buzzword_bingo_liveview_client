@@ -32,3 +32,5 @@ buzzword_bingo_liveview_client-*.tar
 npm-debug.log
 /assets/node_modules/
 
+/lib/**/tailwind_play/
+

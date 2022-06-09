@@ -69,11 +69,9 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
     ~H"""
     <div class={square_class(@square)} id={@square.phrase} phx-target={@target}
         phx-click="square_click" phx-value-id={@square.phrase}>
-      <span><%= @square.phrase %></span>
+      <span class="font-bold"><%= marked_by(@square.marked_by) %></span>
+      <span class="h-2/3 text-sm"><%= @square.phrase %></span>
       <span><%= @square.points %></span>
-      <%= if @square.marked_by do %>
-        <span class="font-bold"><%= @square.marked_by.name %></span>
-      <% end %>
     </div>
     """
   end
@@ -101,7 +99,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   def game_url(assigns) do
     ~H"""
     <div class="input-duo mt-2 mb-8 mx-auto">
-      <input id="game-url" value={@url} readonly class="game-url">
+      <input id="game-url" type="text" value={@url} readonly class="game-url">
       <button title="Copy game URL" phx-click="url_click" phx-target={@target}>
         <Solid.clipboard_copy class="h-full aspect-square invert"/>
       </button>
@@ -141,6 +139,9 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   defp square_class(square) when is_nil(square.marked_by), do: "square bg-white"
   defp square_class(square), do: "square bg-[#{square.marked_by.color}]"
+
+  defp marked_by(player) when is_nil(player), do: ""
+  defp marked_by(player), do: player.name
 
   defp player_mark(player), do: "player-mark bg-[#{player.color}]"
 end

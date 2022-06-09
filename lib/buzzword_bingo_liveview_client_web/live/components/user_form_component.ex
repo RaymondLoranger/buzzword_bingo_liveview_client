@@ -11,36 +11,36 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
 
   def render(assigns) do
     ~H"""
-    <div id="user-form">
-      <h1>Welcome!</h1>
-      <h4 class="text-center text-xl mb-6">
+    <div id="user-form" class="container mx-auto flex flex-col items-center">
+      <h1 class="mt-8 mb-2 text-4xl text-cool-gray-900">Welcome!</h1>
+      <h4 class="m-2 text-xl font-thin text-cool-gray-900">
         First up, we need your name and favorite color:
       </h4>
-      <.form let={f} for={@changeset} phx-change="validate" phx-submit="play">
-        <div class="flex justify-center items-top">
-          <div class="flex flex-col">
+      <.form let={f} for={@changeset} phx-change="validate" phx-submit="play"
+          class="flex flex-col items-center gap-4">
+        <div class="fields">
+          <div class="flex flex-col h-16">
             <%= text_input f, :name, placeholder: "Name", phx_debounce: "500",
-                  phx_hook: "AutoFocus", required: true, class: "rounded-md" %>
-            <%= error_tag f, :name %>
+                  phx_hook: "AutoFocus", required: true, class: name(@color) %>
+            <%= error_tag f, :name, class: "invalid-feedback pl-2" %>
           </div>
-          <div class="flex flex-col ml-8">
-            <ul class="grid grid-cols-8 gap-x-2 max-w-md mx-auto">
+          <div class="flex flex-col h-16">
+            <ul class="flex gap-1.5">
               <%= for color <- @colors do %>
                 <li class="relative">
-                  <%= radio_button f, :color, color, class: "sr-only peer",
-                        phx_target: @myself, phx_click: "color_clicked",
-                        id: color, checked: color == @color %>
-                  <label class={label_class(color)} for={color} title={color}/>
-                  <div class="color-checked">✓</div>
+                  <label title={color} class={color_square(color)}>
+                    <%= radio_button f, :color, color, class: "sr-only peer",
+                          phx_target: @myself, phx_click: "color_clicked",
+                          checked: color == @color %>
+                    <span class={peer_checked()}>✓</span>
+                  </label>
                 </li>
               <% end %>
             </ul>
-            <%= error_tag f, :color %>
+            <%= error_tag f, :color, class: "invalid-feedback pl-0.5" %>
           </div>
         </div>
-        <div class="text-center mt-6">
-          <%= submit "Play Bingo", class: "submit-button" %>
-        </div>
+        <%= submit "Play Bingo!", class: "submit-button" %>
       </.form>
     </div>
     """
@@ -52,5 +52,15 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.UserFormComponent do
 
   ## Private functions
 
-  defp label_class(color), do: "color bg-[#{color}]"
+  defp name(color) do
+    "name border-[#{color}]"
+  end
+
+  defp color_square(color) do
+    "color-square bg-[#{color}]"
+  end
+
+  defp peer_checked do
+    "absolute hidden peer-checked:block top-0.5 left-2"
+  end
 end
