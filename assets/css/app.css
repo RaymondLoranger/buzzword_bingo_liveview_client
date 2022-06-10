@@ -116,8 +116,7 @@ footer a {
 }
 
 #game .squares {
-  @apply relative grid gap-2 mx-auto w-full md:w-7/12 md:mx-0 auto-rows-max
-  auto-cols-max;
+  @apply relative grid gap-1 md:gap-2 mx-auto w-full md:w-7/12 md:mx-0;
 }
 
 #game .winner {
@@ -125,8 +124,8 @@ footer a {
 }
 
 #game .square {
-  @apply grid grid-cols-1 grid-rows-3 border-2 border-indigo-300 rounded-md
-  p-1 aspect-square text-indigo-700 text-xs leading-3;
+  @apply aspect-square grid grid-cols-1 grid-rows-4 content-between
+  justify-center rounded-md text-cool-gray-600;
 }
 
 #game .players {
@@ -138,8 +137,7 @@ footer a {
 }
 
 #game .messages {
-  @apply border-x-2 border-b-2 border-indigo-300 rounded-b-md bg-white
-  overflow-y-auto;
+  @apply w-72 border-x-2 border-b-2 border-indigo-300 rounded-b-md bg-white overflow-auto;
 }
 
 /* #user-form

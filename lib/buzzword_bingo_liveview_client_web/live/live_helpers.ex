@@ -69,9 +69,21 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
     ~H"""
     <div class={square_class(@square)} id={@square.phrase} phx-target={@target}
         phx-click="square_click" phx-value-id={@square.phrase}>
-      <span class="font-bold"><%= marked_by(@square.marked_by) %></span>
-      <span class="h-2/3 text-sm"><%= @square.phrase %></span>
-      <span><%= @square.points %></span>
+      <%= if @square.marked_by do %>
+        <span class="text-xs font-normal justify-self-start p-2">
+          <%= @square.marked_by.name %>
+        </span>
+      <% else %>
+        <span class="text-xs font-normal justify-self-start p-2">
+          &nbsp;
+        </span>
+      <% end %>
+      <span class="text-base font-medium row-span-2 text-center flex flex-col justify-center px-0.5">
+        <%= @square.phrase %>
+      </span>
+      <span class="text-xs font-normal justify-self-end p-2">
+        <%= @square.points %>
+      </span>
     </div>
     """
   end
@@ -109,6 +121,15 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
 
   ## Private functions
 
+  defp squares_class(game_size) do
+    "squares grid-cols-#{game_size}"
+  end
+
+  defp square_class(square) when is_nil(square.marked_by), do: "square bg-white"
+  defp square_class(square), do: "square bg-[#{square.marked_by.color}]"
+
+  defp player_mark(player), do: "player-mark bg-[#{player.color}]"
+
   defp messages_class(_presences = 0) do
     "messages lg:h-[393px] md:h-[263x]"
   end
@@ -132,16 +153,4 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
   defp message_class(sender) do
     "bg-[#{sender.color}] pl-1.5 pr-0.5 mr-1 rounded-sm"
   end
-
-  defp squares_class(game_size) do
-    "squares grid-cols-#{game_size}"
-  end
-
-  defp square_class(square) when is_nil(square.marked_by), do: "square bg-white"
-  defp square_class(square), do: "square bg-[#{square.marked_by.color}]"
-
-  defp marked_by(player) when is_nil(player), do: ""
-  defp marked_by(player), do: player.name
-
-  defp player_mark(player), do: "player-mark bg-[#{player.color}]"
 end
