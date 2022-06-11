@@ -29,7 +29,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
       <div class="p-0">
         <ul id="players" class="players" phx-update="replace">
           <%= for {name, player} <- @players do %>
-            <li class="border-b-[1px] border-gray-200 p-1">
+            <li class="border-b border-gray-200 p-1">
               <span class={player_mark(player)}/>
               <span><%= name %></span>
               <span><%= player.score %></span>
@@ -52,7 +52,7 @@ defmodule Buzzword.Bingo.LiveView.ClientWeb.LiveHelpers do
         <ul id="messages" phx-update="append" phx-hook="ScrollToEnd"
             class={messages_class(@presences)}>
           <%= for %{id: id, text: text, sender: sender} <- @messages do %>
-            <li id={id} class="border-b-[1px] border-gray-200 p-1">
+            <li id={id} class="border-b border-gray-200 p-1">
               <span class={message_class(sender)}>
                 <%= sender.name %>
               </span>
